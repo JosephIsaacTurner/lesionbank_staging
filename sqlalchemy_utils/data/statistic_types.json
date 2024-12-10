@@ -1,0 +1,182 @@
+[
+    {
+        "name": "student's t",
+        "code": "t",
+        "description": "Statistical test comparing means of one or two groups."
+    },
+    {
+        "name": "average r",
+        "code": "r",
+        "description": "Average of correlation coefficients."
+    },
+    {
+        "name": "average r (Fisher-Z)",
+        "code": "avgR",
+        "description": "Average of correlation coefficients after Fisher's r-to-z transformation."
+    },
+    {
+        "name": "pearson r",
+        "code": "r",
+        "description": "Measure of linear correlation between two variables."
+    },
+    {
+        "name": "average fisher's r-to-z",
+        "code": "avgRFz",
+        "description": "Transformation to normalize Pearson's correlation."
+    },
+    {
+        "name": "fisher's r-to-z",
+        "code": "rFz",
+        "description": "Transformation to normalize Pearson's correlation."
+    },
+    {
+        "name": "welch's t",
+        "code": "wT",
+        "description": "T-test for comparing means with unequal variances."
+    },
+    {
+        "name": "cohen's d",
+        "code": "d",
+        "description": "Effect size measure for the difference between two means."
+    },
+    {
+        "name": "spearman's rho",
+        "code": "spearman_r",
+        "description": "Measure of rank correlation between two variables."
+    },
+    {
+        "name": "p",
+        "code": "p",
+        "description": "Probability of observing the test results under the null hypothesis."
+    },
+    {
+        "name": "percent overlap",
+        "code": "percent_overlap",
+        "description": "Proportion of subjects in a group who meet the threshold"
+    },
+    {
+        "name": "disconnection-based brain connectivity",
+        "code": "bcbDisco",
+        "description": "Measure of brain network disruption due to lesions or damage."
+    },
+    {
+        "name": "disconnected streamline map",
+        "code": "disconMapsDisconnectedStreamlineMap",
+        "description": "Visualization of disconnected white matter tracts."
+    },
+    {
+        "name": "percent fiber disconnection map",
+        "code": "disconMapsPercentFiberMap",
+        "description": "Map showing percentage of disconnected fibers in brain regions."
+    },
+    {
+        "name": "track density imaging fiber map",
+        "code": "disconMapsTDIFiberMap",
+        "description": "Visualization of fiber density using tractography data."
+    },
+    {
+        "name": "parcel disconnection connectogram",
+        "code": "parcelDisconConnectogram",
+        "description": "Circular diagram showing disconnections between brain parcels."
+    },
+    {
+        "name": "parcel disconnection edge measures",
+        "code": "parcelDisconEdge",
+        "description": "Metrics of disconnection between pairs of brain parcels."
+    },
+    {
+        "name": "parcel disconnection network measures",
+        "code": "parcelDisconNetworkMeasures",
+        "description": "Graph theory metrics applied to disconnected brain networks."
+    },
+    {
+        "name": "parcel disconnection node measures",
+        "code": "parcelDisconNode",
+        "description": "Metrics of disconnection for individual brain parcels."
+    },
+    {
+        "name": "parcel disconnection percentage matrix",
+        "code": "parcelDisconPercentMat",
+        "description": "Matrix showing percent disconnection between brain parcels."
+    },
+    {
+        "name": "parcel disconnection percentage spared matrix",
+        "code": "parcelDisconPercentSparedMat",
+        "description": "Matrix showing percent of preserved connections between parcels."
+    },
+    {
+        "name": "parcel disconnection raw matrix",
+        "code": "parcelDisconRawMat",
+        "description": "Matrix of raw disconnection values between brain parcels."
+    },
+    {
+        "name": "parcel disconnection raw tractography",
+        "code": "parcelDisconRawTrk",
+        "description": "Tractography data showing disconnected fibers between parcels."
+    },
+    {
+        "name": "parcel disconnection spared edge measures",
+        "code": "parcelDisconSparedEdge",
+        "description": "Metrics of preserved connections between pairs of parcels."
+    },
+    {
+        "name": "parcel disconnection spared node measures",
+        "code": "parcelDisconSparedNode",
+        "description": "Metrics of preserved connections for individual parcels."
+    },
+    {
+        "name": "parcel disconnection track density imaging",
+        "code": "parcelDisconTDI",
+        "description": "TDI applied to disconnected fibers between brain parcels."
+    },
+    {
+        "name": "parcel damage array",
+        "code": "parcelDmgArr",
+        "description": "Array of damage values for each brain parcel."
+    },
+    {
+        "name": "parcel damage map",
+        "code": "parcelDmgMap",
+        "description": "Visualization of damage across brain parcels."
+    },
+    {
+        "name": "parcel shortest structural path length delta matrix",
+        "code": "parcelSSPLDeltaMat",
+        "description": "Matrix of SSPL changes due to disconnection."
+    },
+    {
+        "name": "parcel shortest structural path length edge measures",
+        "code": "parcelSSPLEdge",
+        "description": "SSPL metrics for connections between pairs of parcels."
+    },
+    {
+        "name": "parcel shortest structural path length indirect edge measures",
+        "code": "parcelSSPLIndirectEdge",
+        "description": "Indirect SSPL metrics between pairs of parcels."
+    },
+    {
+        "name": "parcel shortest structural path length indirect matrix",
+        "code": "parcelSSPLIndirectMat",
+        "description": "Matrix of indirect SSPL values between parcels."
+    },
+    {
+        "name": "parcel shortest structural path length indirect node measures",
+        "code": "parcelSSPLIndirectNode",
+        "description": "Indirect SSPL metrics for individual parcels."
+    },
+    {
+        "name": "parcel shortest structural path length matrix",
+        "code": "parcelSSPLMat",
+        "description": "Matrix of SSPL values between brain parcels."
+    },
+    {
+        "name": "parcel shortest structural path length node measures",
+        "code": "parcelSSPLNode",
+        "description": "SSPL metrics for individual brain parcels."
+    },
+    {
+        "name": "tract disconnection array",
+        "code": "tractDisconArr",
+        "description": "Array of disconnection values for white matter tracts."
+    }
+]

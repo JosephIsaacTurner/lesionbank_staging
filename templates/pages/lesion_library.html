@@ -1,0 +1,212 @@
+<!-- templates/pages/lesion_library.html -->
+{% extends "_base.html" %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-4">
+    <!-- Header, Description, and Papaya Viewer -->
+    <div class="row mb-4 align-items-stretch">
+
+    <!-- Display Messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message|safe }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+        <!-- Column 1: Header and Description -->
+        <div class="col-md-7 d-flex flex-column">
+            <!-- Header and Description -->
+            <div>
+                <br>
+                <h1 class="display-4">Lesion Library</h1>
+                <p class="lead">A listing of lesion subjects from our database.</p>
+            </div>
+            <br>
+            <!-- Database Statistics Card -->
+            <div class="mt-auto">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h5 class="card-title">Database Statistics</h5>
+                        <p class="card-text">
+                            Total Subjects: <strong><span id="total_count">0</span></strong>
+                            {% if user.is_staff and request.GET.username %}
+                            <br><em>Created By</em>: <strong><span id="count_username">0</span></strong>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Column 2: Papaya Viewer -->
+        <div class="col-md-5 d-flex flex-column">
+            <div class="papaya flex-grow-1" data-params="params"><!-- Papaya viewer initialization --></div>
+        </div>
+    </div>
+
+    <!-- Action Buttons: Add Dangling Subject and Find My Lesions -->
+    {% if user %}
+    <div class="mt-3 d-flex justify-content-start">
+        <a href="{% url 'add_dangling_subject' %}" class="btn btn-primary me-2">
+            <i class="bi bi-plus-circle"></i> Add Dangling Subject
+        </a>
+        <a href="{% url 'lesion_library' %}?username={{ user.username }}" class="btn btn-secondary">
+            <i class="bi bi-person-circle"></i> Find My Lesions
+        </a>
+    </div>
+    {% endif %}
+
+    <!-- DataTable for Lesion Subjects -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <table id="lesionSubjectsTable" class="display table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        {% if user.is_staff %}
+                            <th>Created By</th>  <!-- Updated Header -->
+                        {% endif %}
+                        <th>ID</th>
+                        <th>Age</th>
+                        <th>Sex</th>
+                        <th>Handedness</th>
+                        <th>Cause</th>
+                        <th>Domain</th>
+                        <th>Subdomain</th>
+                        <th>Symptom</th>
+                        <th>Details</th>
+                        <th>ROI</th>
+                        <th>Connectivity</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Initialize DataTables and Handle Overlay Management -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        // Initialize DataTable
+        var table = $('#lesionSubjectsTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{% url 'get_lesion_subjects_json' %}",
+                "type": "GET",
+                "data": function(d) {
+                    // Pass current GET parameters to the server
+                    d.username = "{{ request.GET.username|default_if_none:'' }}";  // Pass username filter if any
+                    d.context = 'lesion_library';  // Specify the context
+                }
+            },
+            "columns": [
+                {% if user.is_staff %}
+                {
+                    "data": "created_by",
+                    "render": function (data, type, row) {
+                        return data;  // Already contains hyperlink
+                    },
+                    "orderable": true,
+                    "searchable": true
+                },
+                {% endif %}
+                { "data": "id" },
+                { "data": "age" },
+                { "data": "sex" },
+                { "data": "handedness" },
+                { "data": "cause" },
+                { "data": "min_domain", "name": "min_domain" },
+                { "data": "min_subdomain", "name": "min_subdomain" },
+                { "data": "min_symptom", "name": "min_symptom" },
+                { 
+                    "data": "details_url", 
+                    "render": function (data, type, row) {
+                        return '<a href="' + data + '">Details</a>';
+                    },
+                    "orderable": false
+                },
+                { 
+                    "data": "roi_file_url",
+                    "render": function (data, type, row) {
+                        var overlayIcon = '';
+                        var downloadIcon = '';
+                        if (data) {
+                            overlayIcon = '<i title="Toggle ROI Map to Viewer" data-toggle-overlay data-overlay-url="' + data + '" style="color:red; font-size: 22px; cursor: pointer;" class="bi bi-square me-2"></i>';
+                            downloadIcon = '<a href="' + data + '" download title="Download ROI File"><i class="bi bi-download" style="color:red; font-size: 22px;"></i></a>';
+                        }
+                        return overlayIcon + downloadIcon;
+                    },
+                    "orderable": false,
+                    "searchable": false
+                },
+                { 
+                    "data": "connectivity_file_url",
+                    "render": function (data, type, row) {
+                        var overlayIcon = '';
+                        var downloadIcon = '';
+                        if (data) {
+                            overlayIcon = '<i title="Toggle Connectivity Map to Viewer" data-toggle-overlay data-overlay-url="' + data + '" style="color:blue; font-size: 22px; cursor: pointer;" class="bi bi-square me-2"></i>';
+                            downloadIcon = '<a href="' + data + '" download title="Download Connectivity File"><i class="bi bi-download" style="color:blue; font-size: 22px;"></i></a>';
+                        }
+                        return overlayIcon + downloadIcon;
+                    },
+                    "orderable": false,
+                    "searchable": false
+                },
+            ],
+            "pageLength": 100,
+            "ordering": true,
+            "info": true,
+            "searching": true,
+            "drawCallback": function(settings) {
+                // Update total count after the table is drawn (reloaded)
+                var json = settings.json;
+                if (json) {
+                    document.getElementById('total_count').innerHTML = json.recordsTotal;
+
+                    {% if user.is_staff and request.GET.username %}
+                    var usernameCount = json.usernameCount;
+                    var usernameHtml = '';
+                    if (Array.isArray(usernameCount)) {
+                        usernameCount.forEach(function(item) {
+                            usernameHtml += item.username + ': ' + item.count + '<br>';
+                        });
+                    } else {
+                        usernameHtml = usernameCount;
+                    }
+                    document.getElementById('count_username').innerHTML = usernameHtml;
+                    {% endif %}
+                }
+
+                // Initialize Bootstrap tooltips
+                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+                var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                    return new bootstrap.Tooltip(tooltipTriggerEl);
+                });
+            }
+        });
+
+        // Initialize Bootstrap tooltips on page load for any static elements
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+
+        // Papaya viewer is initialized automatically
+        // Overlay manager is already included via _base.html
+    });
+</script>
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+    // Any additional JavaScript can be added here
+</script>
+{% endblock %}

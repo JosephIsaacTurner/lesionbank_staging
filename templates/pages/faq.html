@@ -1,0 +1,156 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}Frequently Asked Questions{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Frequently Asked Questions</h2>
+
+    <!-- Table of Contents -->
+    <div class="card mb-4 bg-light border-dark">
+        <div class="card-body">
+            <h5 class="card-title">Contents</h5>
+            <ul class="list-unstyled">
+                <li><a href="#what-is-lesionbank" class="text-decoration-none">What is LesionBank?</a></li>
+                <li><a href="#what-is-lesion-mapping" class="text-decoration-none">What is "lesion network mapping"?</a></li>
+                <li><a href="#sensitivity-maps" class="text-decoration-none">How are sensitivity maps calculated?</a></li>
+                <li><a href="#decoding" class="text-decoration-none">How does decoding work?</a></li>
+                <li><a href="#taxonomy" class="text-decoration-none">What is LesionBank's taxonomy of symptoms, subdomains, and domains?</a></li>
+                <li><a href="#technical-details" class="text-decoration-none">Technical Details</a></li>
+                <li><a href="#acknowledgements" class="text-decoration-none">Acknowledgements</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- What is LesionBank? -->
+    <div id="what-is-lesionbank" class="faq-item mb-5">
+        <h4>What is LesionBank?</h4>
+        <p>
+            LesionBank is a free, open-source platform that helps collect, organize, and analyze brain lesion case reports. It provides a complete system to explore and understand brain lesion data, with a focus on lesion network mapping.
+        </p>
+    </div>
+
+    <!-- What is "lesion network mapping"? -->
+    <div id="what-is-lesion-mapping" class="faq-item mb-5">
+        <h4>What is "lesion network mapping"?</h4>
+        <p>
+            Lesion network mapping is a technique used to find brain networks that have been disrupted by lesions, and associate patterns of disruption to neurological processes.
+        </p>
+        <p>For more details, see <a href="https://www.nejm.org/doi/full/10.1056/NEJMra1706158" target="_blank">MD Fox's paper</a>.</p>
+    </div>
+
+    <!-- How are sensitivity maps calculated? -->
+    <div id="sensitivity-maps" class="faq-item mb-5">
+        <h4>How are sensitivity maps calculated?</h4>
+        <p>
+            Sensitivity maps show which parts of the brain are linked to specific neurological symptoms. We use statistical methods to find where lesion networks overlap significantly.
+        </p>
+        <ul>
+            <li><strong>Significance Threshold:</strong> A t-value above 5 is considered significant based on our standard brain connection data.</li>
+            <li><strong>Overlap Analysis:</strong> We overlap all lesion networks for a symptom and calculate the percentage that meets the significant t-threshold to create the sensitivity map.</li>
+        </ul>
+    </div>
+
+    <!-- How does decoding work? -->
+    <div id="decoding" class="faq-item mb-5">
+        <h4>How does decoding work?</h4>
+        <p>
+            Decoding interprets a brain map by comparing it to our large database of lesion networks to find similar symptom patterns.
+        </p>
+        <ul>
+            <li><strong>Spatial Correlation:</strong> We compare the input brain map with each lesion network map in our database</li>
+            <li><strong>Ranking Symptoms:</strong> We calculate the average spatial correlation for each symptom, allowing us to rank and identify symptoms with similar brain patterns.</li>
+        </ul>
+    </div>
+
+    <!-- What is LesionBank's taxonomy? -->
+    <div id="taxonomy" class="faq-item mb-5">
+        <h4>What is LesionBank's taxonomy of symptoms, subdomains, and domains?</h4>
+        <p>
+            LesionBank organizes neurological symptoms hierarchically. Each domain includes several subdomains, which in turn have specific symptoms. This taxonomy covers around 100 different symptoms in our database. This structure helps users understand the wide range of neurological functions and their related brain lesion patterns.
+        </p>
+        <div class="accordion" id="taxonomyAccordion">
+            {% for domain in taxonomy %}
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="false" aria-controls="collapse{{ forloop.counter }}">
+                        {{ domain.name }}
+                    </button>
+                </h2>
+                <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#taxonomyAccordion">
+                    <div class="accordion-body">
+                        <p>{{ domain.description }}</p>
+                        {% if domain.subdomains %}
+                        <ul>
+                            {% for subdomain in domain.subdomains %}
+                            <li>
+                                <strong>{{ subdomain.name }}:</strong> {{ subdomain.description }}
+                                {% if subdomain.symptoms %}
+                                <ul class="mt-2">
+                                    {% for symptom in subdomain.symptoms %}
+                                    <li>
+                                        <strong>{{ symptom.name }}:</strong> {{ symptom.description }}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                {% else %}
+                                <p>No symptoms available for this subcategory.</p>
+                                {% endif %}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <p>No subcategories available.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Technical details -->
+    <div id="technical-details" class="faq-item mb-5">
+        <h4>Technical Details</h4>
+        <ul>
+            <li><strong>Connectome:</strong> GSP1000 normative connectome with 500 female and 500 male subjects, available at <a href="https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/ILXIKS" target="_blank">Harvard Dataverse</a>.</li>
+            <li><strong>Resolution:</strong> All brain maps are in 2mm space. Coordinate searches are done in 2mm <a href="https://www.lead-dbs.org/about-the-mni-spaces/" target="_blank">MNI space</a> to keep things consistent.</li>
+            <li><strong>Code:</strong> Our code is fully open-source and available on <a href="https://github.com/your-repo" target="_blank">GitHub</a>.</li>
+            <li><strong>Data:</strong> We store data using <a href="https://www.digitalocean.com/products/spaces" target="_blank">DigitalOcean's S3-Compatible Object Storage</a>.
+            </li>
+            <li><strong>Web Hosting:</strong> We host the application on a <a href="https://www.digitalocean.com/products/droplets" target="_blank">DigitalOcean droplet</a>.</li>
+            <li><strong>Front-End:</strong> The front end is built with vanilla JavaScript and HTML, using open-source libraries like 
+                <a href="https://getbootstrap.com/docs/5.0/getting-started/introduction/" target="_blank">Bootstrap 5</a>, 
+                <a href="https://datatables.net/" target="_blank">DataTables</a>, and 
+                <a href="https://github.com/rii-mango/Papaya/" target="_blank">Papaya</a>.
+            </li>
+            <li><strong>Back-End:</strong> The back end is a <a href="https://www.djangoproject.com/" target="_blank">Django application</a> built with Python using a <a href="https://github.com/wsvincent/lithium" target="_blank">Lithium template</a>.</li>
+            <li><strong>Database:</strong> We use <a href="https://www.postgresql.org/" target="_blank">PostgreSQL</a> for database operations.</li>
+         </ul>
+    </div>
+<!-- Acknowledgements -->
+<div id="acknowledgements" class="faq-item mb-5">
+    <h4 class="mb-4">Acknowledgements</h4>
+    
+    <div class="acknowledgements-content">
+        <p>LesionBank was made possible through the contributions of many individuals, including:</p>
+        
+        <ul class="ms-4 mt-2">
+            <li><strong>Dr. Jared Nielsen, PhD</strong></li>
+            <li><strong>Dr. Michael Ferguson, PhD</strong>.</li>
+            <li><strong>Dr. Frederic Schaper, MD PhD</strong></li>
+            <li><strong>Joseph Turner</strong></li>
+            <li><strong>Anish Suvarna</strong></li>
+            <li><strong>Eli Baughan</strong></li>
+            <li><strong>Kiana Bunnell</strong></li>
+            <li><strong>Keaton Helquist</strong></li>
+            <li><strong>Vicky Chen</strong></li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+{% endblock content %}

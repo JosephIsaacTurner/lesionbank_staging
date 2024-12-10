@@ -1,0 +1,71 @@
+[{
+
+    "level_number": 1,
+    "name": "Level 1",
+    "description": "Baird and Robinson, Bi-Thalamic Infarct",
+    "original_image_path": "traininglevels/01/screenshot.png",
+    "lesion_mask_path": "traininglevels/01/Baird_A.nii.gz"
+},
+{
+    "level_number": 2,
+    "name": "Level 2",
+    "description": "Miller, Right Medial Thalamic",
+    "original_image_path": "traininglevels/02/screenshot.png",
+    "lesion_mask_path": "traininglevels/02/miller_A.nii.gz"
+},
+{
+    "level_number": 3,
+    "name": "Level 3",
+    "description": "Ferreira-garcia, left lenticulocapsular hypointensity",
+    "original_image_path": "traininglevels/03/screenshot.png",
+    "lesion_mask_path": "traininglevels/03/Ferreira-Garcia.nii.gz"
+},
+{
+    "level_number": 4,
+    "name": "Level 4",
+    "description": "Ahmed, lateral right temporal hemorrhage",
+    "original_image_path": "traininglevels/04/screenshot.png",
+    "lesion_mask_path": "traininglevels/04/Ahmed.nii.gz"
+},
+{
+    "level_number": 5,
+    "name": "Level 5",
+    "description": "Curkovic, right parietoocciptal glioblastoma",
+    "original_image_path": "traininglevels/05/screenshot.png",
+    "lesion_mask_path": "traininglevels/05/Curkovic2014.nii.gz"
+},
+{
+    "level_number": 6,
+    "name": "Level 6",
+    "description": "Azevedo Kaupilla, bilateral fornix infarct",
+    "original_image_path": "traininglevels/06/screenshot.png",
+    "lesion_mask_path": "traininglevels/06/Azevedo_A.nii.gz"
+},
+{
+    "level_number": 7,
+    "name": "Level 7",
+    "description": "Guberman and stuss, bilateral paramedian thalamic infract",
+    "original_image_path": "traininglevels/07/screenshot.png",
+    "lesion_mask_path": "traininglevels/07/Guberman_1.nii.gz"
+},
+{
+    "level_number": 8,
+    "name": "Level 8",
+    "description": "Grewal, left medial temporal stroke",
+    "original_image_path": "traininglevels/08/screenshot.png",
+    "lesion_mask_path": "traininglevels/08/Grewal_A.nii.gz"
+},
+{
+    "level_number": 9,
+    "name": "Level 9",
+    "description": "Goldberg, mesencephalic reticular formation lesion",
+    "original_image_path": "traininglevels/09/screenshot.png",
+    "lesion_mask_path": "traininglevels/09/Goldberg_A.nii.gz"
+},
+{
+    "level_number": 10,
+    "name": "Level 10",
+    "description": "Speedia, left dorsomedial thalamic infarct",
+    "original_image_path": "traininglevels/10/screenshot.png",
+    "lesion_mask_path": "traininglevels/10/Speedie_A.nii.gz"
+}]

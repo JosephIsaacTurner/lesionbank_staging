@@ -1,0 +1,323 @@
+<!-- templates/pages/locations.html -->
+{% extends "_base.html" %}
+{% load static %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-4">
+    <!-- Header and Description with Coordinate Form -->
+    <div class="row mb-4 align-items-stretch"> <!-- align-items-stretch ensures equal height columns -->
+        <!-- Column 1: Header, Description, and Coordinate Form -->
+        <!-- Display Messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message|safe }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <div class="col-md-7 d-flex flex-column">
+            <!-- Header and Description -->
+            <div>
+                <br>
+                <h1 class="display-4">Lesion Locations</h1>
+                <p class="lead">Find subjects with lesions at a specific location in the brain.</p>
+            </div>
+            <br>
+            <p>
+                Use the form below to enter the MNI coordinates (X, Y, Z) of a specific location.
+                <br><br>
+                You can also navigate through the brain viewer to find the desired location.
+                <br><br>
+                <em><strong>Coordinates will be rounded to the nearest 2mm voxel.</strong></em>
+            </p>
+
+            <!-- Coordinate Form pushed to the bottom -->
+            <form id="coordinatesForm" class="row g-3 mt-auto">
+                <div class="col-md-2">
+                    <label for="inputX" class="form-label"><strong>X</strong></label>
+                    <input type="number" class="form-control" id="inputX" name="x" value="{{ x }}" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="inputY" class="form-label"><strong>Y</strong></label>
+                    <input type="number" class="form-control" id="inputY" name="y" value="{{ y }}" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="inputZ" class="form-label"><strong>Z</strong></label>
+                    <input type="number" class="form-control" id="inputZ" name="z" value="{{ z }}" required>
+                </div>
+                <div class="col-md-2">
+                    <label for="mapTypeSelect" class="form-label"><strong>Map Type</strong></label>
+                    <select class="form-select" id="mapTypeSelect" name="map_type">
+                        <option value="roi" {% if map_type == 'roi' %}selected{% endif %}>Lesions</option>
+                        <option value="connectivity" {% if map_type == 'connectivity' %}selected{% endif %}>Lesion Networks</option>
+                    </select>
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary">Update Coordinates</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Column 2: Papaya Viewer -->
+        <div class="col-md-5 d-flex flex-column">
+            <div class="papaya flex-grow-1" data-params="params"><!-- Papaya viewer initialization --></div>
+        </div>
+    </div>
+
+    <!-- Coordinate and Map Type Input Form -->
+    <div class="row mb-4 d-none">
+
+        <!-- Database Statistics Card (I've hidden it on purpose) -->
+        <div class="col-md-4">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h5 class="card-title">Database Statistics</h5>
+                    <p class="card-text">
+                        Total Subjects: <strong><span id="total_count">0</span></strong>
+                        {% if request.GET.sex_name %}
+                        <br><em>Sex</em>: <strong><span id="count_sex">0</span></strong>
+                        {% endif %}
+                        {% if request.GET.cause_name %}
+                        <br><em>Cause</em>: <strong><span id="count_cause">0</span></strong>
+                        {% endif %}
+                        {% if request.GET.domain_name %}
+                        <br><em>Domain</em>: <strong><span id="count_domain">0</span></strong>
+                        {% endif %}
+                        {% if request.GET.subdomain_name %}
+                        <br><em>Subdomain</em>: <strong><span id="count_subdomain">0</span></strong>
+                        {% endif %}
+                        {% if request.GET.symptom_name %}
+                        <br><em>Symptom</em>: <strong><span id="count_symptom">0</span></strong>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DataTable for Lesion Subjects -->
+    <div class="row">
+        <div class="col-12">
+            <table id="lesionSubjectsTable" class="display table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Value</th> <!-- New Column -->
+                        <th>ID</th>
+                        <th>Age</th>
+                        <th>Sex</th>
+                        <th>Handedness</th>
+                        <th>Cause</th>
+                        <th>Domain</th>
+                        <th>Subdomain</th>
+                        <th>Symptom</th>
+                        <th>Details</th>
+                        <th>ROI File</th> <!-- New Column -->
+                        <th>Connectivity File</th> <!-- New Column -->
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Initialize DataTables and Handle Coordinate Changes -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        // Initialize DataTable with initial parameters
+        var table = $('#lesionSubjectsTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{% url 'get_lesion_subjects_json' %}",
+                "type": "GET",
+                "data": function(d) {
+                    // Pass additional parameters from the form inputs
+                    d.x = $('#inputX').val();
+                    d.y = $('#inputY').val();
+                    d.z = $('#inputZ').val();
+                    d.map_type = $('#mapTypeSelect').val();
+                    d.sex_name = "{{ request.GET.sex_name|default_if_none:'' }}";
+                    d.cause_name = "{{ request.GET.cause_name|default_if_none:'' }}";
+                    d.symptom_name = "{{ request.GET.symptom_name|default_if_none:'' }}";
+                    d.domain_name = "{{ request.GET.domain_name|default_if_none:'' }}";
+                    d.subdomain_name = "{{ request.GET.subdomain_name|default_if_none:'' }}";
+                    d.context = 'locations';  // Specify the context
+                }
+            },
+            "columns": [
+                { "data": "value" },  // Value column
+                { "data": "id" },
+                { "data": "age" },
+                { "data": "sex" },
+                { "data": "handedness" },
+                { "data": "cause" },
+                { "data": "min_domain", "name": "min_domain" },
+                { "data": "min_subdomain", "name": "min_subdomain" },
+                { "data": "min_symptom", "name": "min_symptom" },
+                { 
+                    "data": "details_url", 
+                    "render": function (data, type, row) {
+                        return '<a href="' + data + '">Details</a>';
+                    },
+                    "orderable": false
+                },
+                { 
+                    "data": "roi_file_url",
+                    "render": function (data, type, row) {
+                        var overlayIcon = '';
+                        var downloadIcon = '';
+                        if (data) {
+                            overlayIcon = '<i title="Toggle ROI Map Viewer" aria-label="Toggle ROI Map Viewer" data-toggle-overlay data-overlay-url="' + data + '" style="color:red; font-size: 22px; cursor: pointer;" class="bi bi-square me-2"></i>';
+                            downloadIcon = '<a href="' + data + '" download title="Download ROI File" aria-label="Download ROI File"><i class="bi bi-download" style="color:red; font-size: 22px;"></i></a>';
+                        }
+                        return overlayIcon + downloadIcon;
+                    },
+                    "orderable": false,
+                    "searchable": false
+                },
+                { 
+                    "data": "connectivity_file_url",
+                    "render": function (data, type, row) {
+                        var overlayIcon = '';
+                        var downloadIcon = '';
+                        if (data) {
+                            overlayIcon = '<i title="Toggle Connectivity Map Viewer" aria-label="Toggle Connectivity Map Viewer" data-toggle-overlay data-overlay-url="' + data + '" style="color:blue; font-size: 22px; cursor: pointer;" class="bi bi-square me-2"></i>';
+                            downloadIcon = '<a href="' + data + '" download title="Download Connectivity File" aria-label="Download Connectivity File"><i class="bi bi-download" style="color:blue; font-size: 22px;"></i></a>';
+                        }
+                        return overlayIcon + downloadIcon;
+                    },
+                    "orderable": false,
+                    "searchable": false
+                },
+            ],
+            "pageLength": 100,
+            "ordering": true,
+            "info": true,
+            "searching": true,
+            "drawCallback": function(settings) {
+                // Update total count after the table is drawn (reloaded)
+                var json = settings.json;
+                if (json) {
+                    document.getElementById('total_count').innerHTML = json.recordsTotal;
+
+                    {% if request.GET.sex_name %}
+                    var sexCount = json.sexCount;
+                    var sexHtml = '';
+                    if (Array.isArray(sexCount)) {
+                        sexCount.forEach(function(item) {
+                            sexHtml += item.sex + ': ' + item.count + '<br>';
+                        });
+                    } else {
+                        sexHtml = sexCount;
+                    }
+                    document.getElementById('count_sex').innerHTML = sexHtml;
+                    {% endif %}
+                    
+                    {% if request.GET.cause_name %}
+                    var causeCount = json.causeCount;
+                    var causeHtml = '';
+                    if (Array.isArray(causeCount)) {
+                        causeCount.forEach(function(item) {
+                            causeHtml += item.cause + ': ' + item.count + '<br>';
+                        });
+                    } else {
+                        causeHtml = causeCount;
+                    }
+                    document.getElementById('count_cause').innerHTML = causeHtml;
+                    {% endif %}
+                    
+                    {% if request.GET.domain_name %}
+                    var domainCount = json.domainCount;
+                    var domainHtml = '';
+                    if (Array.isArray(domainCount)) {
+                        domainCount.forEach(function(item) {
+                            domainHtml += item.domain + ': ' + item.count + '<br>';
+                        });
+                    } else {
+                        domainHtml = domainCount;
+                    }
+                    document.getElementById('count_domain').innerHTML = domainHtml;
+                    {% endif %}
+                    
+                    {% if request.GET.subdomain_name %}
+                    var subdomainCount = json.subdomainCount;
+                    var subdomainHtml = '';
+                    if (Array.isArray(subdomainCount)) {
+                        subdomainCount.forEach(function(item) {
+                            subdomainHtml += item.subdomain + ': ' + item.count + '<br>';
+                        });
+                    } else {
+                        subdomainHtml = subdomainCount;
+                    }
+                    document.getElementById('count_subdomain').innerHTML = subdomainHtml;
+                    {% endif %}
+                    
+                    {% if request.GET.symptom_name %}
+                    var symptomCount = json.symptomCount;
+                    var symptomHtml = '';
+                    if (Array.isArray(symptomCount)) {
+                        symptomCount.forEach(function(item) {
+                            symptomHtml += item.symptom + ': ' + item.count + '<br>';
+                        });
+                    } else {
+                        symptomHtml = symptomCount;
+                    }
+                    document.getElementById('count_symptom').innerHTML = symptomHtml;
+                    {% endif %}
+                }
+
+                // Initialize Bootstrap tooltips
+                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+                var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                    return new bootstrap.Tooltip(tooltipTriggerEl);
+                });
+            }
+        });
+
+        $('#coordinatesForm').on('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Get the coordinate values
+            var x = $('#inputX').val();
+            var y = $('#inputY').val();
+            var z = $('#inputZ').val();
+            var mapType = $('#mapTypeSelect').val();
+
+            // Update the URL without reloading the page
+            var newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + $.param({
+                x: x,
+                y: y,
+                z: z,
+                map_type: mapType
+            });
+            window.history.replaceState({path: newUrl}, '', newUrl);
+
+            // Reload DataTable with new parameters
+            table.ajax.reload();
+
+            // Update Papaya viewer with new coordinates
+            viewer = papayaContainers[0]?.viewer;
+            console.log(x, y, z);
+            coord_obj = new papaya.core.Coordinate();
+            viewer.gotoCoordinate(viewer.getIndexCoordinateAtWorld(x, y, z, coord_obj));
+        });
+
+        params["coordinate"] = [{{ x }}, {{ y }}, {{ z }}];
+    });
+</script>
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+    // Initialize Bootstrap tooltips on page load for any static elements
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,61 @@
+<!-- templates/pages/lesion_tracing_completion.html -->
+{% extends '_base.html' %}
+{% load static %}
+
+{% block title %}Lesion Tracing Completion Certificate{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center">
+        <!-- Display Messages -->
+        {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message|safe }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+        {% endif %}
+        <h1 class="display-4">Certificate of Completion</h1>
+        <p class="lead">This certifies that</p>
+        <h2>{{ user.get_full_name|default:user.username }}</h2>
+        <p class="lead">
+            has successfully completed all levels of the Lesion Tracing Practice on
+            {{ completion_date|date:"F j, Y" }}
+        </p>
+    </div>
+    <div class="row mt-5">
+        <div class="col-md-2">
+            <!-- Spacer -->
+        </div>
+        <div class="col-md-8">
+            <hr>
+            <table class="table table-bordered table-light mt-3">
+                <thead>
+                    <tr>
+                        <th>Level Number</th>
+                        <th>Level Name</th>
+                        <th>Maximum Score Achieved</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in level_scores %}
+                    <tr>
+                        <td>{{ item.level_number }}</td>
+                        <td>{{ item.level_name }}</td>
+                        <td>{{ item.score }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="text-center mt-5">
+                <p>Thank you for participating in the Lesion Tracing Practice.</p>
+            </div>
+
+        </div>
+        <div class="col-md-2">
+            <!-- Spacer -->
+        </div>
+    </div>
+</div>
+{% endblock content %}

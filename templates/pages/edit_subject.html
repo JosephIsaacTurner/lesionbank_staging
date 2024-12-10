@@ -1,0 +1,182 @@
+<!-- pages/edit_subject.html -->
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}Edit Subject{% endblock title %}
+
+{% block content %}
+<div class="row justify-content-center mt-5 mb-5">
+    <div class="col-md-8">
+        <h1 class="display-4">Edit Subject: {{ subject }}</h1>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message|safe }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                {{ form.errors }}
+            </div>
+        {% endif %}
+
+        <!-- Form Starts Here -->
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            <!-- Action Buttons at the Top of the Form -->
+            <div class="d-flex flex-wrap gap-2 mt-4 justify-content-between align-items-center">
+                <div>
+                    <button type="submit" class="btn btn-success btn-lg me-2">Submit</button>
+                    <a href="{% url 'subject_detail' subject.id %}" class="btn btn-outline-secondary me-2">View Subject</a>
+                    
+                    {% if subject.case_report %}
+                        <a href="{% url 'case_report_detail' subject.case_report.id %}" class="btn btn-outline-secondary me-2">View Case Report</a>
+                        <a href="{% url 'add_subject_to_case_report' subject.case_report.id %}" class="btn btn-outline-secondary me-2">Add New Subject</a>
+                    {% else %}
+                        <a href="{% url 'import_case_report' %}" class="btn btn-outline-secondary me-2">Create Case Report</a>
+                    {% endif %}
+                    
+                    <button type="submit" name="delete_subject" class="btn btn-outline-danger btn-sm me-2">Delete Subject</button>
+                </div>
+            </div>
+
+            {{ form|crispy }}
+
+            <br>
+            <div class="accordion" id="pdfAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingPDF">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePDF" aria-expanded="false" aria-controls="collapsePDF">
+                            View Case Report PDF
+                        </button>
+                    </h2>
+                    <div id="collapsePDF" class="accordion-collapse collapse" aria-labelledby="headingPDF" data-bs-parent="#pdfAccordion">
+                        <div class="accordion-body">
+                            {% if subject.case_report and subject.case_report.path %}
+                                <embed src="{{ subject.case_report.path.url }}" type="application/pdf" width="100%" height="600px" />
+                            {% else %}
+                                <p>No Case Report PDF available.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Original Image Files -->
+            <h3 class="mt-4">Original Image Files</h3>
+            {% for original_image_form in form.get_original_image_forms %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        {{ original_image_form.non_field_errors }}
+                        {{ original_image_form|crispy }}
+
+                        {% if original_image_form.instance.pk %}
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" name="delete_original_image_{{ forloop.counter0 }}" id="delete_original_image_{{ forloop.counter0 }}">
+                                <label class="form-check-label" for="delete_original_image_{{ forloop.counter0 }}">
+                                    Delete this file
+                                </label>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% empty %}
+                <p>No Original Image Files available.</p>
+            {% endfor %}
+
+            <!-- ROI File Forms -->
+            <h3 class="mt-4">ROI Files</h3>
+            {% for roi_form in form.get_roi_file_forms %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        {{ roi_form.non_field_errors }}
+                        {{ roi_form|crispy }}
+
+                        {% if roi_form.instance.pk %}
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" name="delete_roi_{{ forloop.counter0 }}" id="delete_roi_{{ forloop.counter0 }}">
+                                <label class="form-check-label" for="delete_roi_{{ forloop.counter0 }}">
+                                    Delete this file
+                                </label>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% empty %}
+                <p>No ROI Files available.</p>
+            {% endfor %}
+
+            <!-- Connectivity File Forms -->
+            <h3 class="mt-4">Connectivity Files</h3>
+            {% for connectivity_form in form.get_connectivity_file_forms %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        {{ connectivity_form.non_field_errors }}
+                        {{ connectivity_form|crispy }}
+
+                        {% if connectivity_form.instance.pk %}
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" name="delete_connectivity_{{ forloop.counter0 }}" id="delete_connectivity_{{ forloop.counter0 }}">
+                                <label class="form-check-label" for="delete_connectivity_{{ forloop.counter0 }}">
+                                    Delete this file
+                                </label>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% empty %}
+                <p>No Connectivity Files available.</p>
+            {% endfor %}
+
+            <!-- (Optional) Action Buttons at the Bottom of the Form -->
+            
+            <div class="d-flex flex-wrap gap-2 mt-4 justify-content-between align-items-center">
+                <div>
+                    <button type="submit" class="btn btn-success btn-lg me-2">Submit</button>
+                    <a href="{% url 'subject_detail' subject.id %}" class="btn btn-outline-secondary me-2">View Subject</a>
+                    
+                    {% if subject.case_report %}
+                        <a href="{% url 'case_report_detail' subject.case_report.id %}" class="btn btn-outline-secondary me-2">View Case Report</a>
+                        <a href="{% url 'add_subject_to_case_report' subject.case_report.id %}" class="btn btn-outline-secondary me-2">Add New Subject</a>
+                    {% else %}
+                        <a href="{% url 'import_case_report' %}" class="btn btn-outline-secondary me-2">Create Case Report</a>
+                    {% endif %}
+                    
+                    <button type="submit" name="delete_subject" class="btn btn-outline-danger btn-sm me-2">Delete Subject</button>
+                </div>
+            </div>
+           
+        </form>
+        <!-- Form Ends Here -->
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const fileInputs = document.querySelectorAll('.original-file-input');
+        for (let fileInput of fileInputs) {
+            document.addEventListener('paste', function(event) {
+                const items = event.clipboardData.items;
+                for (let item of items) {
+                    if (item.kind === 'file') {
+                        const file = item.getAsFile();
+                        const dataTransfer = new DataTransfer();
+                        dataTransfer.items.add(file);
+                        fileInput.files = dataTransfer.files;
+                        break;
+                    }
+                }
+            });
+        }
+    });
+</script>
+{% endblock extra_js %}

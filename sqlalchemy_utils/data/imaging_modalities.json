@@ -1,0 +1,46 @@
+[
+    {
+        "name": "T1",
+        "description": "High-resolution MRI; white matter bright, gray matter darker. Good for anatomical details."
+    },
+    {
+        "name": "T2",
+        "description": "MRI highlighting fluid and lesions; CSF bright, white matter darker. Useful for detecting pathology."
+    },
+    {
+        "name": "CT",
+        "description": "X-ray-based; bone white, CSF dark, tissue gray. Quick for emergencies (fractures, bleeding)."
+    },
+    {
+        "name": "DTI",
+        "description": "MRI tracking water diffusion in white matter. Assesses structural brain connectivity."
+    },
+    {
+        "name": "DWI",
+        "description": "MRI detecting water diffusion; bright in restricted areas (e.g., stroke). Sensitive to early brain changes."
+    },
+    {
+        "name": "FLAIR",
+        "description": "MRI with dark CSF, enhancing lesions near fluid. Ideal for multiple sclerosis plaques."
+    },
+    {
+        "name": "fMRI",
+        "description": "Measures brain activity via blood flow changes; active areas appear brighter. Useful for brain mapping."
+    },
+    {
+        "name": "MRA",
+        "description": "MRI for blood vessels; vessels appear bright. Non-invasive, used for vascular conditions."
+    },
+    {
+        "name": "PET",
+        "description": "Uses radioactive tracers to show brain metabolism; high activity areas bright. Diagnoses neurological conditions."
+    },
+    {
+        "name": "SWI",
+        "description": "MRI sensitive to magnetic changes; iron and blood appear dark. Detects microbleeds and hemorrhages."
+    },
+    {
+        "name": "Unknown",
+        "description": "Imaging modality not specified."
+    }
+]

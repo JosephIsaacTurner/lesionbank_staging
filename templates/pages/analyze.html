@@ -1,0 +1,79 @@
+<!-- pages/analyze.html -->
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}Decode Brain Map{% endblock title %}
+
+{% block content %}
+{% csrf_token %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message|safe }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+            {% endif %}
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="card-title mb-0">{{ page_name }}</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data" class="form">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-upload me-2"></i>Upload and Decode
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <br>
+            <br>
+
+            <div class="accordion" id="segmentEditorAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseViewer" aria-expanded="true" aria-controls="collapseViewer">
+                            Lesion Segment Editor
+                        </button>
+                    </h2>
+                    <div id="collapseViewer" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#segmentEditorAccordion">
+                        <div class="accordion-body">
+                            <div class="d-flex justify-content-end mb-3">
+                                <button id="segmentToggleButton" class="btn btn-primary me-2">Lasso Tool: OFF</button>
+                                <button id="segmentClearButton" class="btn btn-danger me-2">Clear</button>
+                                <button id="segmentExportButton" class="btn btn-success me-2">Export as NIfTI</button>
+                                <button id="segmentAnalyze" class="btn btn-warning">Analyze</button> 
+                            </div>
+                            <div class="papaya" data-params="params"><!-- Papaya viewer initialization --></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/paper@0.12.18/dist/paper-full.min.js"></script>
+<script src="{% static 'js/papayaSegmenter.js' %}"></script>
+<script>
+params["mainView"] = "axial";
+params["kioskMode"] = true;
+params["coordinate"] = [0, 0, 0];
+params["loadingComplete"] = function() {
+    if (!PapayaSegmenter.init()) {
+        console.error('Failed to initialize PapayaSegmenter');
+    }
+};
+</script>
+{% endblock %}

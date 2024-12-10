@@ -1,0 +1,162 @@
+[
+    {
+        "name": "Affective Systems",
+        "description": "Affective Systems are responsible for processing and responding to both aversive and positive motivational situations or contexts, encompassing emotional responses such as fear, anxiety, reward seeking, and mood regulation.",
+        "subdomains": [
+            {
+                "name": "Threat and Risk Evaluation",
+                "description": "Threat and Risk Evaluation is the process of assessing the potential for harm or loss."
+            },
+            {
+                "name": "Reward Responsiveness",
+                "description": "Reward Responsiveness is the degree to which an individual is likely to respond to rewards."
+            },
+            {
+                "name": "Habit",
+                "description": "Habit is a routine of behavior that is repeated regularly and tends to occur subconsciously. Relates to compulsive behavior."
+            },
+            {
+                "name": "Volition",
+                "description": "Volition is the cognitive process by which an individual decides on and commits to a particular course of action."
+            },
+            {
+                "name": "Positive Affect",
+                "description": "Positive Affect is a relatively long lasting emotional state associated with positive feelings and well-being."
+            },
+            {
+                "name": "Impulse Control",
+                "description": "Impulse Control is the ability to resist or delay an impulse, drive, or temptation to act."
+            },
+            {
+                "name": "Other Inhibitory Systems",
+                "description": "Other subdomains related to responses to aversive situations and inhibition of behavior."
+            },
+            {
+                "name": "Other Positive Valence Systems",
+                "description": "Other subdomains related to responses to positive motivational situations or contexts."
+            }
+        ]
+    },    
+    {
+        "name": "Cognitive Systems",
+        "description": "Cognitive Systems are responsible for various cognitive processes.",
+        "subdomains":
+        [
+            {
+                "name": "Executive Function",
+                "description": "Executive Function is a set of cognitive processes that are necessary for the cognitive control of behavior, including working memory, reasoning, task flexibility, problem solving, and attention control."
+            },
+            {
+                "name": "Perception",
+                "description": "Perception is the organization, identification, and interpretation of sensory information in order to represent and understand the environment."
+            },
+            {
+                "name":"Memory",
+                "description":"Memory is the faculty of the brain by which information is encoded, stored, and retrieved when needed."
+            },
+            {
+                "name": "Language",
+                "description": "Language is a system of communication that uses symbols to convey information."
+            },
+            {
+                "name": "Sense of Self",
+                "description": "Sense of Self is a system that represents the individual’s experience of being a separate and distinct entity that is continuous in time and space."
+            },
+            {
+                "name": "Reality Monitoring",
+                "description": "Reality Monitoring is a cognitive system that is responsible for discriminating between internally generated information and information that arises from external sources."
+            },
+            {
+                "name": "Emotional Processing",
+                "description": "Emotional Processing is the process of recognizing, understanding, and responding to emotions in oneself and others."
+            },
+            {
+                "name": "Other",
+                "description": "Other Cognitive Systems"
+            }
+        ]
+    },
+    {
+        "name": "Arousal and Regulatory Systems",
+        "description": "Arousal/Regulatory Systems are responsible for generating activation of neural systems as appropriate for various contexts, and providing appropriate homeostatic regulation of such systems as energy balance and sleep.",
+        "subdomains":
+        [
+            {
+                "name": "Sleep",
+                "description": "Sleep is a naturally recurring state characterized by reduced or absent consciousness, relatively suspended sensory activity, and inactivity of nearly all voluntary muscles."
+            },
+            {
+                "name":"Consciousness",
+                "description":"Consciousness is the state or quality of awareness, or, of being aware of an external object or something within oneself."
+            },
+            {
+                "name": "Autonomic and Homeostatic Functions",
+                "description": "Homeostasis is the property of a system in which variables are regulated so that internal conditions remain stable and relatively constant."
+            },
+            {
+                "name": "Epilepsy",
+                "description": "Epilepsy is a group of neurological disorders characterized by epileptic seizures."
+            },
+            {
+                "name": "Other",
+                "description": "Other Arousal/Regulatory Systems"
+            }
+        ]
+    },
+    {
+        "name": "Sensory Systems",
+        "description": "Sensory Systems are responsible for processing sensory information from the body and the environment.",
+        "subdomains": [
+            {
+                "name": "Somatosensory",
+                "description": "Somatosensory is the system that is responsible for the processing of sensory information from the body."
+            },
+            {
+                "name": "Vestibular",
+                "description": "Vestibular is the system that provides the leading contribution to the sense of balance and spatial orientation for the purpose of coordinating movement with balance."
+            },
+            {
+                "name": "Spatial",
+                "description": "Spatial is the system that is responsible for the processing of spatial information."
+            },
+            {
+                "name": "Proprioception",
+                "description": "Proprioception is the sense of the relative position of one's own parts of the body and strength of effort being employed in movement."
+            },
+            {
+                "name": "Visual",
+                "description": "Visual is the system that is responsible for the processing of visual information."
+            },
+            {
+                "name": "Auditory",
+                "description": "Auditory is the system that is responsible for the processing of auditory information."
+            },
+            {
+                "name": "Olfactory",
+                "description": "Olfactory is the system that is responsible for the processing of olfactory information."
+            },
+            {
+                "name": "Gustatory",
+                "description": "Gustatory is the system that is responsible for the processing of gustatory information."
+            }
+        ]
+    },
+    {
+        "name": "Motor Systems",
+        "description": "Motor Systems are primarily responsible for the control and execution of motor behaviors, and their refinement during learning and development.",
+        "subdomains": [
+            {
+                "name": "Gross Motor",
+                "description": "Gross Motor is the movement of the large muscles of the body."
+            },
+            {
+                "name": "Fine Motor",
+                "description": "Fine Motor is the movement of small muscles, such as those in the fingers and hands."
+            },
+            {
+                "name": "Oculomotor",
+                "description": "Oculomotor is the control of eye movements."
+            }
+        ]
+    }
+]

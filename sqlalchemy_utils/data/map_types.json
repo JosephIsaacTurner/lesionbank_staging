@@ -1,0 +1,14 @@
+[
+    {
+        "name": "Sensitivity Map (Overlap)",
+        "description": "A map showing the percentage of maps that overlap at a certain threshold (generally t>5)."
+    },
+    {
+        "name": "Average Map",
+        "description": "An average of all maps at each voxel."
+    },
+    {
+        "name": "Specificity Map",
+        "description": "A two-sample t-test contrasting connectivity values at each voxel between cases and controls."
+    }
+]

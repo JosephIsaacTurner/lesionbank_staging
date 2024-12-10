@@ -1,0 +1,105 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block content %}
+<div class="container mt-4 mb-4">
+    <h1>{{ title }}</h1>
+    <!-- Display Messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message|safe }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group mb-3">
+            {{ form|crispy }}
+        </div>
+
+        <div class="form-group mt-3">
+            <button type="submit" class="btn btn-primary">Add Symptom</button>
+            <a href="{% url 'symptom_library' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<!-- Include jQuery and Select2 JS/CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<!-- Initialization and AJAX Handling -->
+<script>
+$(document).ready(function() {
+    console.log("Starting select2");
+
+    // Initialize Select2 for single select fields
+    $('.select2-single').select2({
+        width: '100%', // Ensure it takes full width
+        placeholder: "Select an option",
+        allowClear: true
+    });
+
+    // Initialize Select2 for multiple select fields with tagging
+    $('.select2-multiple').select2({
+        tags: true,
+        tokenSeparators: [','],
+        width: '100%', // Ensure it takes full width
+        placeholder: "Add items..."
+    });
+
+    // Function to fetch subdomains based on selected domain
+    function fetchSubdomains(domain_id) {
+        console.log("Fetching subdomains for domain_id:", domain_id);
+        $.ajax({
+            url: '{% url "get_subdomains" %}',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                domain_id: domain_id
+            },
+            success: function(data) {
+                console.log('Received subdomains:', data);
+                var subdomainSelect = $('#id_subdomain');
+                subdomainSelect.empty(); // Remove old options
+                subdomainSelect.append('<option value="">---------</option>'); // Default blank option
+                $.each(data, function(index, subdomain) {
+                    subdomainSelect.append('<option value="' + subdomain.id + '">' + subdomain.text + '</option>');
+                });
+                subdomainSelect.trigger('change'); // Notify Select2 to update
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', status, error);
+                console.log('Response Text:', xhr.responseText);
+            }
+        });
+    }
+
+    // Event listener for domain selection change
+    $('#id_domain').on('change', function() {
+        var domain_id = $(this).val();
+        if(domain_id) {
+            fetchSubdomains(domain_id);
+        } else {
+            var subdomainSelect = $('#id_subdomain');
+            subdomainSelect.empty();
+            subdomainSelect.append('<option value="">---------</option>');
+            subdomainSelect.trigger('change');
+        }
+    });
+
+    // If there's a selected domain on page load, fetch subdomains
+    var initial_domain_id = $('#id_domain').val();
+    if(initial_domain_id) {
+        fetchSubdomains(initial_domain_id);
+    }
+});
+</script>
+{% endblock content %}

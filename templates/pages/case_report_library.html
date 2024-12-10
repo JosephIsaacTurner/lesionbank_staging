@@ -1,0 +1,153 @@
+<!-- pages/case_report_library.html -->
+{% extends "_base.html" %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block content %}
+<div class="mt-4 mb-4">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="display-4 text-start mb-3">Case Report Library</h1>
+        </div>
+    </div>
+
+    <!-- Display Messages -->
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message|safe }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+    {% endif %}
+    <div class="row">
+        <div class="col-md-8">
+            <p class="lead">
+                A listing of potential lesion case reports from an automated systematic PubMed search.
+            </p>
+            <p class="text-muted">
+                Please note that results haven't yet been human-reviewed and may contain false positives.
+            </p>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h5 class="card-title">Database Statistics</h5>
+                    <p class="card-text">
+                        Total Case Reports: <strong><span id="total_count"></span></strong>
+                        {% if domain_name %}
+                        <br><em>{{ domain_name }}</em>: <strong><span id="count_domain"></span></strong>
+                        {% endif %}
+                        {% if subdomain_name %}
+                        <br><em>{{ subdomain_name }}</em>: <strong><span id="count_subdomain"></span></strong>
+                        {% endif %}
+                        {% if symptom_name %}
+                        <br><em>{{ symptom_name }}</em>: <strong><span id="count_symptom"></span></strong>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Case Report Button -->
+    <div class="d-flex justify-content-start mb-3">
+        <a href="{% url 'import_case_report' %}" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Import Case Report</a>
+    </div>
+
+    <table id="caseReportsTable" class="display">
+        <thead>
+            <tr>
+                <th>DOI</th>
+                <th>First Author</th>
+                <th>Year</th>
+                <th>Domain</th>
+                <th>Subdomain</th>
+                <th>Symptom</th>
+                <th>Validated</th>
+                <th>Details</th>
+                {% if is_logged_in %}
+                <th>PDF</th>
+                {% endif %}
+            </tr>
+        </thead>
+    </table>
+
+    <!-- DataTables initialization with AJAX -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var is_logged_in = {{ is_logged_in|yesno:"true,false" }};
+            var columns = [
+                { "data": "doi" },
+                { "data": "first_author" },
+                { "data": "year" },
+                { "data": "domain" },
+                { "data": "subdomain" },
+                { "data": "symptom" },
+                { "data": "validated_status" },
+                { 
+                    "data": "case_report_id", 
+                    "render": function (data, type, row) {
+                        return '<a href="' + '{% url "case_report_detail" 0 %}'.replace('0', data) + '">Details</a>';
+                    },
+                    "orderable": false
+                }
+            ];
+            // Conditionally add the PDF column if the user is logged in
+            {% if is_logged_in %}
+            columns.push({
+                "data": "pdf_url",
+                "render": function (data, type, row) {
+                    if (data) {
+                        return '<a href="' + data + '" target="_blank">PDF</a>';
+                    }
+                    return '';
+                },
+                "orderable": false
+            });
+            {% endif %}
+
+            $('#caseReportsTable').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "{% url 'get_case_reports_json' %}",
+                    "type": "GET",
+                    "data": function(d) {
+                        d.domain_name = "{{ domain_name|default_if_none:'' }}";
+                        d.subdomain_name = "{{ subdomain_name|default_if_none:'' }}";
+                        d.symptom_name = "{{ symptom_name|default_if_none:'' }}";
+                        d.validated_status = "{{ validated_status|default_if_none:'' }}";
+                    }
+                },
+                "columns": columns,
+                "pageLength": 100,
+                "ordering": true,
+                "info": true,
+                "searching": true,
+                "drawCallback": function(settings) {
+                    // Update total count after the table is drawn (reloaded)
+                    var totalRecords = settings.json.recordsTotal;
+                    var totalRecordsFiltered = settings.json.recordsFiltered;
+                    document.getElementById('total_count').innerHTML = totalRecords;
+                    {% if domain_name %}
+                    var domainCount = settings.json.domainCount;
+                    document.getElementById('count_domain').innerHTML = domainCount;
+                    {% endif %}
+                    {% if subdomain_name %}
+                    var subdomainCount = settings.json.subdomainCount;
+                    document.getElementById('count_subdomain').innerHTML = subdomainCount;
+                    {% endif %}
+                    {% if symptom_name %}
+                    var symptomCount = settings.json.symptomCount;
+                    document.getElementById('count_symptom').innerHTML = symptomCount;
+                    {% endif %}
+                },
+                "order": [[6, 'asc']]
+            });
+        });
+    </script>
+</div>
+{% endblock %}

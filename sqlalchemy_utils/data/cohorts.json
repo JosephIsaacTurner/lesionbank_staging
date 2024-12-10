@@ -1,0 +1,42 @@
+[
+    {
+        "name":"grafman",
+        "synonyms":["TBI105"],
+        "description":"Vietnam head injury study"
+    },
+    {
+        "name":"rochester",
+        "synonyms":["rochester_cohort"],
+        "description":"Addiction remission lesions provided by rochester"
+    },
+    {
+        "name":"iowa",
+        "synonyms":["iowa_cohort"],
+        "description":"Addiction remission lesions provided by iowa"
+    },
+    {
+        "name":"central_post_stroke_pain",
+        "synonyms":["Central_PostStroke_Pain"],
+        "description":"Central Post Stroke Pain lesions selected from the literature. Not limited to thalamus."
+    },
+    {
+        "name":"pain_thalamic",
+        "synonyms":["pain_thalamic"],
+        "description":"Lesions causing central pain, limited to thalamic lesions"
+    },
+    {
+        "name":"criminality_temporal_association_to_criminal_behavior",
+        "synonyms":["Criminality_temporal_association_to_criminal_behavior"],
+        "description":"Lesions associated with criminal behavior, temporally linked to onset of criminal behavior"
+    },
+    {
+        "name":"criminality_unkown_prob_lesions",
+        "synonyms":["Criminality_UnknownProb_Lesions"],
+        "description":"Lesions associated with criminal behavior, but unknown if temporally linked to onset of criminal behavior"
+    },
+    {
+        "name":"brain_tumor_resection_spirituality",
+        "synonyms":["brain_tumor_resection"],
+        "description":"Lesions associated with changes in spirituality following brain tumor resection"
+    }
+]

@@ -1,0 +1,169 @@
+<!-- templates/pages/home.html -->
+{% extends '_base.html' %}
+{% load static %}
+{% load custom_filters %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block content %}
+<div class="container mt-4 mb-4">
+    <!-- Header -->
+    <div class="row">
+
+        <div class="col-md-12">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message|safe }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            <!-- Logo and Site Name -->
+            <img src="{% static 'images/logo.png' %}" alt="Logo" class="d-inline-block align-middle" width="100" height="100">
+            <h1 class="d-inline-block align-middle fs-1">www.Lesion<b>Bank</b>.org</h1>
+        </div>
+    </div>
+
+    <!-- Description and Links -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <p class="lead">
+                LesionBank is a dedicated platform for lesion network mapping analysis, including:
+            </p>
+            <div class="list-group list-group-flush">
+                <a href="{% url 'case_report_library' %}" class="h5 list-group-item list-group-item-action bg-light border-0">
+                    <i class="bi bi-dot"></i> A searchable database of published human brain lesion case reports
+                </a>
+                <a href="{% url 'lesion_library' %}" class="h5 list-group-item list-group-item-action bg-light border-0">
+                    <i class="bi bi-dot"></i> A collection of selected lesions and lesion network maps
+                </a>
+                <a href="{% url 'symptom_library' %}" class="h5 list-group-item list-group-item-action bg-light border-0">
+                    <i class="bi bi-dot"></i> A collection of neurological symptoms mapped to brain networks
+                </a>
+            </div>
+            {% if symptom %}
+                <p class="lead">
+                    LesionBank explores the relationship between brain lesions and neurological symptoms, creating results like this:
+                </p>
+                <br>
+                <h5 class="text-center"><i>{{ symptom.name }} Sensitivity Map derived from {{subject_count}} lesions.</i></h5>
+            {% else %}
+                <p class="text-danger">{{ error }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Papaya Viewer and Subjects Table Side by Side -->
+    {% if symptom %}
+    <div class="row mt-4">
+        <!-- Subjects Table Column -->
+        <div class="col-md-6">
+            <h4>Subjects with <a href="{% url 'symptom_detail' symptom.id %}">{{ symptom.name }}</a> caused by lesions</h4>
+            <table id="subjects-table" class="display table table-striped">
+                <thead>
+                    <tr>
+                        <!-- Only displaying 'Details', 'Lesion', and 'Network' columns -->
+                        <th>Details</th>
+                        <th>Lesion</th>
+                        <th>Network</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be loaded via AJAX -->
+                </tbody>
+            </table>
+        </div>
+        <!-- Papaya Viewer Column -->
+        <div class="col-md-6">
+            <div class="papaya" data-params="params"></div>
+        </div>
+    </div>
+    {% endif %}
+
+    <hr>
+
+    <!-- Logos at the bottom -->
+    <div class="d-flex justify-content-center flex-wrap mt-4">
+        <img src="{% static 'images/byu_logo_navy.png' %}" class="img-fluid" style="max-height: 80px;">
+        <img src="{% static 'images/bwh-logo.svg' %}" class="img-fluid" style="max-height: 80px;">
+        <img src="{% static 'images/cbct_logo_dark.png' %}" class="img-fluid" style="max-height: 80px;">
+        <img src="{% static 'images/harvard_med_logo.png' %}" class="img-fluid" style="max-height: 80px;">
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+<script type="text/javascript">
+    params["loadingComplete"] = function() {
+        PapayaOverlayManager.init();
+        console.log("Papaya viewer loaded, now toggling the following: {{ group_level_map_file.path.url }}");
+        PapayaOverlayManager.toggleOverlay('{{ group_level_map_file.path.url }}', null);
+    };
+
+    $(document).ready(function() {
+        // Initialize Subjects DataTable
+        $('#subjects-table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{% url 'get_lesion_subjects_json' %}",
+                "data": function(d) {
+                    d.symptom_name = "{{ symptom.name }}";
+                }
+            },
+            "columns": [
+                {
+                    "data": "details_url",
+                    "render": function(data, type, row, meta) {
+                        return '<a href="' + data + '">View Details</a>';
+                    }
+                },
+                {
+                    "data": "roi_file_url",
+                    "render": function (data, type, row) {
+                        if (data) {
+                            return '<i title="Toggle Lesion Map to Viewer" data-toggle-overlay data-overlay-url="' + data + '" style="color:red; font-size: 22px; cursor: pointer;" class="bi bi-square"></i>';
+                        } else {
+                            return '';
+                        }
+                    },
+                    "orderable": false,
+                    "searchable": false
+                },
+                {
+                    "data": "connectivity_file_url",
+                    "render": function (data, type, row) {
+                        if (data) {
+                            return '<i title="Toggle Network Map to Viewer" data-toggle-overlay data-overlay-url="' + data + '" style="color:blue; font-size: 22px; cursor: pointer;" class="bi bi-square"></i>';
+                        } else {
+                            return '';
+                        }
+                    },
+                    "orderable": false,
+                    "searchable": false
+                }
+            ],
+            "pageLength": 5,
+            "lengthChange": false,
+            "searching": false,
+            "language": {
+                "infoFiltered": ""
+            },
+            "drawCallback": function(settings) {
+                // Initialize Bootstrap tooltips
+                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+                var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                    return new bootstrap.Tooltip(tooltipTriggerEl);
+                });
+            }
+        });
+
+        // Initialize Bootstrap tooltips on page load for any static elements
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+</script>
+{% endblock extra_js %}

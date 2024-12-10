@@ -1,0 +1,225 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load custom_filters %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block content %}
+<div class="container mt-4 mb-4">
+    <!-- Display Messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message|safe }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if user_can_view %}
+        <!-- Header -->
+        <div class="row">
+            <div class="col-md-12">
+                <h1>{{ symptom.name }}</h1>
+                <p><strong>Description:</strong> {{ symptom.description }}</p>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="row mt-4">
+            <!-- Left Column: Group Level Maps -->
+            <div class="col-md-5">
+                <h4>Group Level Maps</h4>
+
+                {% if group_level_map_files %}
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Map Name</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for map_file in group_level_map_files %}
+                            {% if map_file.path.name|has_extension:".nii .nii.gz" %}
+                                <tr>
+                                    <td>
+                                        <a href="{{ map_file.path.url }}" target="_blank" rel="noopener">
+                                            {{ map_file.path.name|basename }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <!-- Overlay Toggle Icon with Tooltip -->
+                                        <i data-toggle-overlay
+                                           data-overlay-url="{{ map_file.path.url }}"
+                                           title="Toggle to viewer"
+                                           style="color:green; font-size: 22px; cursor: pointer;"
+                                           class="bi bi-square"></i>
+                                        &nbsp;
+                                        <!-- Download Icon with Tooltip -->
+                                        <a href="{{ map_file.path.url }}" download>
+                                            <i title="Download"
+                                               style="color:black; font-size: 22px; cursor: pointer;"
+                                               class="bi bi-download"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No group level maps available for this symptom.</p>
+                {% endif %}
+
+                <!-- Buttons for managing group level maps -->
+                <a href="{% url 'import_group_level_map_symptom' symptom.id %}" class="btn btn-primary mb-3">Add Group Level Map</a>
+                <a href="{% url 'manage_group_level_maps_symptom' symptom.id %}" class="btn btn-secondary mb-3">Manage Group Level Maps</a>
+            </div>
+
+            <!-- Middle Column: Papaya Viewer -->
+            <div class="col-md-7">
+                <div class="papaya" data-params="params"></div>
+            </div>
+        </div>
+
+        <!-- Subjects Table Below Viewer -->
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <h4>Subjects with this Symptom</h4>
+                <table id="subjects-table" class="display table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Age</th>
+                            <th>Sex</th>
+                            <th>Handedness</th>
+                            <th>Cause</th>
+                            <th>Domain</th>
+                            <th>Subdomain</th>
+                            <th>Symptom</th>
+                            {% if user.is_staff %}
+                                <th>Created By</th>
+                            {% endif %}
+                            <th>Details</th>
+                            <th>Lesion</th>
+                            <th>Network</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data will be loaded via AJAX -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <!-- Back to Symptoms Library Button -->
+                <a href="{% url 'symptom_library' %}" class="btn btn-outline-primary">Back to Symptoms Library</a>
+                <!-- Edit Symptom Button -->
+                <a href="{% url 'edit_symptom' symptom.id %}" class="btn btn-secondary">Edit Symptom</a>
+            </div>
+        </div>
+    {% else %}
+        <!-- Display Internal Use Only Message -->
+        <div class="alert alert-info mt-4" role="alert">
+            This symptom has been marked as internal use only. If you believe you should have access, please contact a site administrator.
+        </div>
+    {% endif %}
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+<!-- Include DataTables CSS and JS if not already included -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+
+{% if user_can_view %}
+<script>
+$(document).ready(function() {
+    // Initialize Subjects DataTable
+    $('#subjects-table').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": "{% url 'get_lesion_subjects_json' %}",
+            "data": function(d) {
+                d.symptom_name = "{{ symptom.name }}";
+            }
+        },
+        "columns": [
+            {"data": "id"},
+            {"data": "age"},
+            {"data": "sex"},
+            {"data": "handedness"},
+            {"data": "cause"},
+            {"data": "domain"},
+            {"data": "subdomain"},
+            {"data": "symptom"},
+            {% if user.is_staff %}
+            {
+                "data": "created_by",
+                "render": function (data, type, row) {
+                    return data;
+                },
+                "orderable": true,
+                "searchable": true
+            },
+            {% endif %}
+            {
+                "data": "details_url",
+                "render": function(data, type, row, meta) {
+                    return '<a href="' + data + '">View Details</a>';
+                }
+            },
+            {
+                "data": "roi_file_url",
+                "render": function (data, type, row) {
+                    if (data) {
+                        return '<i title="Toggle Lesion Map to Viewer" data-toggle-overlay data-overlay-url="' + data + '" style="color:red; font-size: 22px; cursor: pointer;" class="bi bi-square"></i>';
+                    } else {
+                        return '';
+                    }
+                },
+                "orderable": false,
+                "searchable": false
+            },
+            {
+                "data": "connectivity_file_url",
+                "render": function (data, type, row) {
+                    if (data) {
+                        return '<i title="Toggle Network Map to Viewer" data-toggle-overlay data-overlay-url="' + data + '" style="color:blue; font-size: 22px; cursor: pointer;" class="bi bi-square"></i>';
+                    } else {
+                        return '';
+                    }
+                },
+                "orderable": false,
+                "searchable": false
+            }
+        ],
+        "pageLength": 25,
+        "language": {
+            "infoFiltered": ""  // Remove the "filtered from X entries" text
+        },
+        "drawCallback": function(settings) {
+            // Initialize Bootstrap tooltips for dynamic content
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('#subjects-table [title]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        }
+    });
+
+    // Initialize Bootstrap tooltips on page load for any static elements
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+});
+</script>
+{% endif %}
+{% endblock extra_js %}

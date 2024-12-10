@@ -1,0 +1,129 @@
+<!-- pages/add_subject_to_case_report.html -->
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}Add Subject to Case Report{% endblock title %}
+
+{% block content %}
+<div class="row justify-content-center mt-5 mb-5">
+    <div class="col-md-8">
+        <h1 class="display-4">Add Subject to Case Report</h1>
+        <h2 class="card-title">{{ case_report.title }}</h2>
+        <br>
+        <a href="{% url 'case_report_detail' case_report.id %}" class="btn btn-secondary mb-3">Return to Case Report</a>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message|safe }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <div class="accordion" id="pdfAccordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="headingPDF">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePDF" aria-expanded="false" aria-controls="collapsePDF">
+                        View Case Report PDF
+                    </button>
+                </h2>
+                {% if case_report.path %}
+                <div id="collapsePDF" class="accordion-collapse collapse" aria-labelledby="headingPDF" data-bs-parent="#pdfAccordion">
+                    <div class="accordion-body">
+                        <embed src="{{ case_report.path.url }}" type="application/pdf" width="100%" height="600px" />
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            
+            <!-- Hidden Case Report Field -->
+            {{ form.case_report }}
+            
+            <!-- Render other form fields using crispy -->
+            {{ form|crispy }}
+
+            <!-- Original Image Files -->
+            <h3>Original Image Files</h3>
+            {% for original_image_form in form.get_original_image_forms %}
+                {{ original_image_form.non_field_errors }}
+                {{ original_image_form|crispy }}
+            {% endfor %}
+
+            <!-- ROI File Forms -->
+            <h3>ROI Files</h3>
+            {% for roi_form in form.get_roi_file_forms %}
+                {{ roi_form.non_field_errors }}
+                {{ roi_form|crispy }}
+            {% endfor %}
+
+            <!-- Connectivity File Forms -->
+            <h3>Connectivity Files</h3>
+            {% for connectivity_form in form.get_connectivity_file_forms %}
+                {{ connectivity_form.non_field_errors }}
+                {{ connectivity_form|crispy }}
+            {% endfor %}
+
+            <button type="submit" class="btn btn-success mt-3">Submit</button>
+            <a href="{% url 'case_report_detail' case_report.id %}" class="btn btn-secondary mt-3">Return to Case Report</a>
+        </form>
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function() {
+        // Initialize Select2 for multiple selection fields
+        $('.select2-multiple').select2({
+            placeholder: 'Select symptoms',
+            allowClear: true,
+            width: '100%'
+        });
+
+        // Initialize Select2 for the Case Report Association field
+        $('select[name="case_report"]').select2({
+            ajax: {
+                url: "{% url 'lookup_case_report' %}",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        query: params.term  // Search term
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.results
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 1,
+            placeholder: "Search for a Case Report",
+            allowClear: true
+        });
+    });
+
+    // Handle paste events for file inputs (if necessary)
+    document.addEventListener('DOMContentLoaded', function() {
+        fileInputs = document.querySelectorAll('.original-file-input');
+        for (let fileInput of fileInputs) {
+            document.addEventListener('paste', function(event) {
+                const items = event.clipboardData.items;
+                for (let item of items) {
+                    if (item.kind === 'file') {
+                        const file = item.getAsFile();
+                        const dataTransfer = new DataTransfer();
+                        dataTransfer.items.add(file);
+                        fileInput.files = dataTransfer.files;
+                        break;
+                    }
+                }
+            });
+        }
+    });
+</script>
+{% endblock extra_js %}

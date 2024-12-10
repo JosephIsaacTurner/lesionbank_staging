@@ -1,0 +1,235 @@
+{% extends '_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load custom_filters %}
+
+{% block title %}Subject Detail: {{ subject.id }}{% endblock title %}
+
+{% block content %}
+<div class="container mt-4 mb-4">
+    <!-- Display Messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message|safe }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if user_can_view %}
+        <!-- Display Subject Details -->
+        <!-- Header and Basic Information -->
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="display-4">Subject Detail: {{ subject.id }}</h1>
+                <ul class="list-group list-group-flush">
+                    {% if subject.nickname %}
+                    <li class="list-group-item bg-light">
+                        <strong>Nickname:</strong> {{ subject.nickname }}
+                    </li>
+                    {% endif %}
+                    {% if subject.patient_cohort %}
+                    <li class="list-group-item bg-light">
+                        <strong>Patient Cohort:</strong> {{ subject.patient_cohort.name }}
+                    </li>
+                    {% endif %}
+                    {% if subject.case_report %}
+                    <li class="list-group-item bg-light">
+                        <strong>Case Report:</strong> 
+                        <a href="{% url 'case_report_detail' subject.case_report.id %}">{{ subject.case_report.title }}</a>
+                    </li>
+                    {% endif %}
+                </ul>
+
+                <!-- Basic Information Table -->
+                <h4 class="mt-4">Basic Information</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Age</th>
+                            <th>Sex</th>
+                            <th>Handedness</th>
+                            <th>Cause</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ subject.age }}</td>
+                            <td>{{ subject.sex.name }}</td>
+                            <td>{{ subject.handedness.name }}</td>
+                            <td>{{ subject.cause.name }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Associated Symptoms -->
+        {% if symptoms %}
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <h4>Associated Symptoms</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Symptom</th>
+                            <th>Subdomain</th>
+                            <th>Domain</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for symptom in symptoms %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'symptom_detail' symptom.pk %}">{{ symptom.name }}</a>
+                                </td>
+                                <td>
+                                    {% if symptom.subdomain %}
+                                        <a href="{% url 'subdomain_detail' symptom.subdomain.pk %}">{{ symptom.subdomain.name }}</a>
+                                    {% else %}
+                                        N/A
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if symptom.domain %}
+                                        <a href="{% url 'domain_detail' symptom.domain.pk %}">{{ symptom.domain.name }}</a>
+                                    {% elif symptom.subdomain and symptom.subdomain.domain %}
+                                        <a href="{% url 'domain_detail' symptom.subdomain.domain.pk %}">{{ symptom.subdomain.domain.name }}</a>
+                                    {% else %}
+                                        N/A
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% else %}
+        <p>No symptoms associated with this subject.</p>
+        {% endif %}
+
+        <!-- Papaya Viewer and Overlay Controls -->
+        <div class="row mt-4">
+            <!-- Overlay Controls -->
+            <div class="col-md-5">
+                <!-- ROI Files -->
+                <h4>ROI Files</h4>
+                {% if roi_files %}
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Dimension</th>
+                                <th>File</th>
+                                <th>Load into Viewer</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for file in roi_files %}
+                            {% if file.path.name|has_extension:".nii .nii.gz" %}
+                                <tr>
+                                    <td>{{ file.dimension.name }}</td>
+                                    <td><a href="{{ file.path.url }}" target="_blank" rel="noopener">{{ file.path.name }}</a></td>
+                                    <td>
+                                        {% if file.path.name|has_extension:".nii .nii.gz" %}
+                                            <i data-toggle-overlay data-overlay-url="{{ file.path.url }}" style="color:red; font-size: 22px; cursor: pointer;" class="bi bi-square"></i>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No ROI files associated with this subject.</p>
+                {% endif %}
+
+                <!-- Connectivity Files -->
+                <h4 class="mt-4">Connectivity Files</h4>
+                {% if connectivity_files %}
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Statistic Type</th>
+                                <th>Connectome</th>
+                                <th>File</th>
+                                <th>Load into Viewer</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for file in connectivity_files %}
+                            {% if file.path.name|has_extension:".nii .nii.gz" %}
+                                <tr>
+                                    <td>{{ file.statistic_type.name }}</td>
+                                    <td>{{ file.connectome.name }}</td>
+                                    <td><a href="{{ file.path.url }}" target="_blank" rel="noopener">{{ file.path.name }}</a></td>
+                                    <td>
+                                        {% if file.path.name|has_extension:".nii .nii.gz" %}
+                                            <i data-toggle-overlay data-overlay-url="{{ file.path.url }}" style="color:blue; font-size: 22px; cursor: pointer;" class="bi bi-square"></i>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No connectivity files associated with this subject.</p>
+                {% endif %}
+            </div>
+            <!-- Papaya Viewer -->
+            <div class="col-md-7">
+                <div class="papaya" data-params="params"><!-- Papaya viewer initialization --></div>
+            </div>
+        </div>
+
+        <!-- Original Image Files in an Accordion -->
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <h4>Original Image Files</h4>
+                {% if original_image_files %}
+                    <div class="accordion" id="originalImagesAccordion">
+                        {% for file in original_image_files %}
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="false" aria-controls="collapse{{ forloop.counter }}">
+                                        {{ file.image_modality.name }} - {{ file.path.name }}
+                                    </button>
+                                </h2>
+                                <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#originalImagesAccordion">
+                                    <div class="accordion-body">
+                                        {% if file.path.name|has_extension:".png .jpg .jpeg" %}
+                                            <img src="{{ file.path.url }}" class="img-fluid" alt="{{ file.path.name }}">
+                                        {% else %}
+                                            <p>Cannot display this file type.</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>No original image files associated with this subject.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <a href="{% url 'edit_subject' subject.id %}" class="btn btn-secondary">Edit Subject</a>
+                {% if subject.case_report %}
+                    <a href="{% url 'case_report_detail' subject.case_report.id %}" class="btn btn-primary">Back to Case Report</a>
+                    <a href="{% url 'add_subject_to_case_report' subject.case_report.id %}" class="btn btn-success">Add New Subject</a>
+                {% endif %}
+            </div>
+        </div>
+    {% else %}
+        <!-- Display Internal Use Only Message -->
+        <div class="alert alert-info mt-4" role="alert">
+            This subject has been marked as internal use only. If you believe you should have access, please contact a site administrator.
+        </div>
+    {% endif %}
+</div>
+{% endblock content %}

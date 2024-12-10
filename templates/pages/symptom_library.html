@@ -1,0 +1,171 @@
+<!-- templates/pages/symptom_library.html -->
+{% extends "_base.html" %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4 mb-4">
+    <!-- Header, Description, and Database Statistics Card with Papaya Viewer -->
+    <div class="row mb-4 align-items-stretch">
+
+        <!-- Display Messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message|safe }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Column 1: Header, Description, and Database Statistics Card -->
+        <div class="col-md-7 d-flex flex-column">
+            <!-- Header and Description -->
+            <div>
+                <br>
+                <h1 class="display-4">Symptom Library</h1>
+                <p class="lead">A listing of symptoms from our database.</p>
+            </div>
+            <br>
+            <!-- Database Statistics Card -->
+            <div class="mt-auto">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h5 class="card-title">Database Statistics</h5>
+                        <p class="card-text">
+                            Total Symptoms: <strong><span id="total_count"></span></strong>
+                            {% if domain_name %}
+                            <br><em>{{ domain_name }}</em>: <strong><span id="count_domain"></span></strong>
+                            {% endif %}
+                            {% if subdomain_name %}
+                            <br><em>{{ subdomain_name }}</em>: <strong><span id="count_subdomain"></span></strong>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Column 2: Papaya Viewer -->
+        <div class="col-md-5 d-flex flex-column">
+            <div class="papaya flex-grow-1" data-params="params"><!-- Papaya viewer initialization --></div>
+        </div>
+    </div>
+
+    <!-- Add Symptom Button -->
+    <div class="d-flex justify-content-start mb-3">
+            <a href="{% url 'add_symptom' %}" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Add New Symptom</a>
+    </div>
+    
+    <!-- DataTable for Symptoms -->
+    <div class="row">
+        <div class="col-12">
+            <table id="symptomsTable" class="display table table-striped" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Symptom</th>
+                        <th>Domain</th>
+                        <th>Subdomain</th>
+                        <th>Number of Subjects</th>
+                        <th>Subjects with Connectivity Files</th>
+                        <th>Number of Case Reports</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- DataTables initialization with AJAX -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        var table = $('#symptomsTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                "url": "{% url 'get_symptoms_json' %}",
+                "type": "GET",
+                "data": function(d) {
+                    d.domain_name = "{{ domain_name|default_if_none:'' }}";
+                    d.subdomain_name = "{{ subdomain_name|default_if_none:'' }}";
+                }
+            },
+            "columns": [
+                { 
+                    "data": "name",
+                    "render": function(data, type, row) {
+                        var symptomLink = data; // 'data' contains the symptom link as HTML
+                        var symptomText = $('<div>').html(data).text(); // Extract text from HTML
+                        var overlayIcon = '';
+                        var downloadIcon = '';
+                        if (row.symptom_sensitivity_percent_overlap_map) {
+                            overlayIcon = ' <i title="Toggle Symptom Map Viewer" data-toggle-overlay data-overlay-url="' + row.symptom_sensitivity_percent_overlap_map.path + '" data-overlay-label="Symptom: ' + symptomText + '" style="color:red; font-size: 16px; cursor: pointer;" class="bi bi-square me-2"></i>';
+                            downloadIcon = '<a href="' + row.symptom_sensitivity_percent_overlap_map.path + '" download title="Download Symptom Sensitivity Map"><i class="bi bi-download" style="color:red; font-size: 16px;"></i></a>';
+                        }
+                        return symptomLink + overlayIcon + downloadIcon;
+                    }
+                },
+                { 
+                    "data": "domain",
+                    "render": function(data, type, row) {
+                        var domainLink = data;
+                        var domainText = $('<div>').html(data).text();
+                        var overlayIcon = '';
+                        var downloadIcon = '';
+                        if (row.domain_sensitivity_percent_overlap_map) {
+                            overlayIcon = ' <i title="Toggle Domain Map Viewer" data-toggle-overlay data-overlay-url="' + row.domain_sensitivity_percent_overlap_map.path + '" data-overlay-label="Domain: ' + domainText + '" style="color:green; font-size: 16px; cursor: pointer;" class="bi bi-square me-2"></i>';
+                            downloadIcon = '<a href="' + row.domain_sensitivity_percent_overlap_map.path + '" download title="Download Domain Sensitivity Map"><i class="bi bi-download" style="color:green; font-size: 16px;"></i></a>';
+                        }
+                        return domainLink + overlayIcon + downloadIcon;
+                    }
+                },
+                { 
+                    "data": "subdomain",
+                    "render": function(data, type, row) {
+                        var subdomainLink = data;
+                        var subdomainText = $('<div>').html(data).text();
+                        var overlayIcon = '';
+                        var downloadIcon = '';
+                        if (row.subdomain_sensitivity_percent_overlap_map) {
+                            overlayIcon = ' <i title="Toggle Subdomain Map Viewer" data-toggle-overlay data-overlay-url="' + row.subdomain_sensitivity_percent_overlap_map.path + '" data-overlay-label="Subdomain: ' + subdomainText + '" style="color:blue; font-size: 16px; cursor: pointer;" class="bi bi-square me-2"></i>';
+                            downloadIcon = '<a href="' + row.subdomain_sensitivity_percent_overlap_map.path + '" download title="Download Subdomain Sensitivity Map"><i class="bi bi-download" style="color:blue; font-size: 16px;"></i></a>';
+                        }
+                        return subdomainLink + overlayIcon + downloadIcon;
+                    }
+                },
+                { "data": "subject_count" },
+                { "data": "connectivity_subject_count" },
+                { "data": "case_report_count" },
+            ],
+            "pageLength": 100,
+            "ordering": true,
+            "info": true,
+            "searching": true,
+            "order": [[4, "desc"]],  // Initial sort on 'Subjects with Connectivity Files' descending
+            "drawCallback": function(settings) {
+                // Update total count after the table is drawn (reloaded)
+                var totalRecords = settings.json.recordsTotal;
+                document.getElementById('total_count').innerHTML = totalRecords;
+                {% if domain_name %}
+                var domainCount = settings.json.domainCount;
+                document.getElementById('count_domain').innerHTML = domainCount;
+                {% endif %}
+                {% if subdomain_name %}
+                var subdomainCount = settings.json.subdomainCount;
+                document.getElementById('count_subdomain').innerHTML = subdomainCount;
+                {% endif %}
+                // Initialize Bootstrap tooltips
+                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+                var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                    return new bootstrap.Tooltip(tooltipTriggerEl);
+                });
+            }
+        });
+
+        // Papaya viewer is initialized automatically
+        // Overlay manager is already included via _base.html
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,193 @@
+<!-- pages/templates/pages/analyze_results.html -->
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}Analysis Results{% endblock title %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <!-- Display Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message|safe }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Numerical Results -->
+            {% if grouped_results %}
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="card-title mb-0">Decode Results</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <button id="download-grouped" class="btn btn-success me-2">
+                                <i class="fas fa-download me-2"></i>Download Grouped Results
+                            </button>
+                            <button id="download-raw" class="btn btn-secondary">
+                                <i class="fas fa-download me-2"></i>Download Raw Results
+                            </button>
+                        </div>
+                        <div class="results-content">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Taxonomy Item</th>
+                                        <th>Mean Spatial Correlation</th>
+                                        <th>T-Statistic</th>
+                                        <th>Std Dev</th>
+                                        <th>N</th>
+                                        <th>Range</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in grouped_results %}
+                                        <tr>
+                                            <td>{{ item.taxonomy_item }}</td>
+                                            <td>{{ item.mean_correlation|floatformat:3 }}</td>
+                                            <td>{{ item.t_statistic|floatformat:3 }}</td>
+                                            <td>{{ item.std_correlation|floatformat:3 }}</td>
+                                            <td>{{ item.n_subjects }}</td>
+                                            <td>{{ item.min_correlation|floatformat:3 }} to {{ item.max_correlation|floatformat:3 }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="alert alert-warning" role="alert">
+                    No results found for the selected taxonomy level.
+                </div>
+            {% endif %}
+
+            <br>
+            <br>
+
+            <div class="accordion shadow" id="connectivityViewerAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingViewer">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" 
+                                data-bs-target="#collapseViewer" aria-expanded="true" 
+                                aria-controls="collapseViewer">
+                            Connectivity Map Viewer
+                        </button>
+                    </h2>
+                    <div id="collapseViewer" class="accordion-collapse collapse show" 
+                         aria-labelledby="headingViewer" data-bs-parent="#connectivityViewerAccordion">
+                        <div class="accordion-body">
+                            <div class="d-flex justify-content-end mb-3">
+                                {% if lesion_mask_url %}
+                                    <a href="{{ lesion_mask_url }}" class="btn btn-secondary me-2">
+                                        <i class="fas fa-download me-2"></i>Download Lesion Mask
+                                    </a>
+                                    <i title="Toggle Lesion Mask in Viewer" 
+                                       data-toggle-overlay 
+                                       data-overlay-url="{{ lesion_mask_url }}" 
+                                       style="color:red; font-size: 22px; cursor: pointer;" 
+                                       class="bi bi-square me-3"></i>
+                                {% endif %}
+                                {% if connectivity_map_url %}
+                                    <a href="{{ connectivity_map_url }}" class="btn btn-primary me-2">
+                                        <i class="fas fa-download me-2"></i>Download Connectivity Map
+                                    </a>
+                                    <i title="Toggle Connectivity Map in Viewer" 
+                                       data-toggle-overlay 
+                                       data-overlay-url="{{ connectivity_map_url }}" 
+                                       style="color:blue; font-size: 22px; cursor: pointer;" 
+                                       class="bi bi-square"></i>
+                                {% endif %}
+                            </div>
+                            <div class="papaya" data-params="params"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 text-center">
+                <a href="{% url 'analyze' %}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Analyze
+                </a>
+            </div>
+        </div> <!-- End of col-md-8 -->
+    </div> <!-- End of row -->
+</div> <!-- End of container -->
+
+<!-- Embed the JSON data using Django's json_script -->
+{{ grouped_results|json_script:"grouped-results" }}
+{{ raw_results|json_script:"raw-results" }}
+
+<script>
+    // Retrieve the JSON data from the script tags
+    const groupedResults = JSON.parse(
+        document.getElementById('grouped-results').textContent.replace(/NaN/g, 'null')
+    );
+    const rawResults = JSON.parse(
+        document.getElementById('raw-results').textContent.replace(/NaN/g, 'null')
+    );
+    
+
+    // Function to convert JSON to CSV
+    function jsonToCSV(jsonData) {
+        if (!jsonData || jsonData.length === 0) {
+            return '';
+        }
+
+        const keys = Object.keys(jsonData[0]);
+        const csvRows = [];
+
+        // Add the header
+        csvRows.push(keys.join(','));
+
+        // Add the rows
+        jsonData.forEach(obj => {
+            const row = keys.map(k => {
+                let val = obj[k];
+                if (typeof val === 'string') {
+                    // Escape double quotes in strings
+                    val = val.replace(/"/g, '""');
+                    // Wrap in double quotes
+                    return `"${val}"`;
+                }
+                return val;
+            }).join(',');
+            csvRows.push(row);
+        });
+
+        return csvRows.join('\n');
+    }
+
+    // Function to trigger download
+    function downloadCSV(filename, csvContent) {
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        if (link.download !== undefined) { // feature detection
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", filename);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    }
+
+    // Event listeners for download buttons
+    document.getElementById('download-grouped').addEventListener('click', function() {
+        console.log('Downloading grouped results');
+        const csv = jsonToCSV(groupedResults);
+        downloadCSV('grouped_results.csv', csv);
+    });
+
+    document.getElementById('download-raw').addEventListener('click', function() {
+        console.log('Downloading raw results');
+        const csv = jsonToCSV(rawResults);
+        downloadCSV('raw_results.csv', csv);
+    });
+</script>
+{% endblock content %}

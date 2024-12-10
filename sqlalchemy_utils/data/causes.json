@@ -1,0 +1,38 @@
+[
+    {
+        "name": "ischemic stroke",
+        "description": "CT: initially normal, later hypodense. MRI: T1 hypointense, T2 hyperintense. Blockage of blood flow to brain tissue."
+    },
+    {
+        "name": "hemorrhagic stroke",
+        "description": "CT: hyperdense. MRI: T1 hyperintense, T2 hypointense. Rupture of blood vessel in the brain."
+    },    
+    {
+        "name": "stroke (unspecified)",
+        "description": "Select if the specific type of stroke is not known or inferred from imaging."
+    },
+    {
+        "name": "multiple sclerosis",
+        "description": "MRI: T2 and FLAIR hyperintense, T1 hypointense in chronic lesions. Demyelinating disease causing scar tissue."
+    },
+    {
+        "name": "tumor",
+        "description": "MRI: T2 hyperintense, T1 hypointense. Abnormal cell growth in the brain."
+    },
+    {
+        "name": "surgical lesion",
+        "description": "Post-surgical cavity or enhancement on imaging. e.g., ablation, ultrasound."
+    },
+    {
+        "name": "encephalitis",
+        "description": "Inflammation of the brain, often due to infection."
+    },
+    {
+        "name": "vascular malformations",
+        "description": "Abnormal connection between blood vessels, can cause lesions through calcification or hemorrhage."
+    },
+    {
+        "name": "unspecified",
+        "description": "Report did not specify, or this data was not collected during annotation."
+    }
+]

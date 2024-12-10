@@ -1,0 +1,82 @@
+<!-- pages/decode_progress.html -->
+{% extends '_base.html' %}
+{% load static %}
+{% block title %}Decoding In Progress{% endblock title %}
+
+{% block content %}
+<div class="container py-5 text-center">
+    <!-- Display Messages -->
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message|safe }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+    {% endif %}
+    <h2 class="mb-4">Decoding in Progress</h2>
+    <div class="progress mb-3" style="height: 25px;">
+        <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated"
+             role="progressbar" style="width: 0%">0%</div>
+    </div>
+    <p id="status-text">Please wait while we decode your brain map.</p>
+</div>
+
+<script>
+    function checkTaskStatus(taskId) {
+        fetch("{% url 'decode_task_status' task_id=task_id %}")
+            .then(response => response.json())
+            .then(data => {
+                if (data.state === 'SUCCESS') {
+                    // Redirect to results page with data
+                    displayResults();
+                } else if (data.state === 'FAILURE') {
+                    // Display error message
+                    document.getElementById('status-text').innerText = 'An error occurred: ' + data.error;
+                    document.getElementById('progress-bar').classList.remove('progress-bar-animated');
+                    document.getElementById('progress-bar').classList.add('bg-danger');
+                    document.getElementById('progress-bar').style.width = '100%';
+                    document.getElementById('progress-bar').innerText = 'Failed';
+                } else if (data.state === 'PROGRESS') {
+                    // Update progress bar and status text
+                    const progress = data.progress;
+                    const status = data.status;
+                    document.getElementById('progress-bar').style.width = progress + '%';
+                    document.getElementById('progress-bar').innerText = progress + '%';
+                    document.getElementById('status-text').innerText = status;
+                    // Continue polling
+                    setTimeout(function() {
+                        checkTaskStatus(taskId);
+                    }, 1000);
+                } else {
+                    // Handle other states like PENDING, STARTED
+                    document.getElementById('status-text').innerText = data.status || 'Task is pending...';
+                    setTimeout(function() {
+                        checkTaskStatus(taskId);
+                    }, 1000);
+                }
+            })
+            .catch(error => {
+                // Handle fetch errors
+                document.getElementById('status-text').innerText = 'Unable to connect to the server. Please try again later.';
+                document.getElementById('progress-bar').classList.remove('progress-bar-animated');
+                document.getElementById('progress-bar').classList.add('bg-danger');
+                document.getElementById('progress-bar').style.width = '100%';
+                document.getElementById('progress-bar').innerText = 'Error';
+                console.error('Error fetching task status:', error);
+            });
+    }
+
+    function displayResults() {
+        // Redirect to results page with data
+        const params = new URLSearchParams();
+        params.append('task_id', '{{ task_id }}');
+        window.location.href = '{% url "decode_results" %}?' + params.toString();
+    }
+
+    // Start checking the task status once the DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        checkTaskStatus('{{ task_id }}');
+    });
+</script>
+{% endblock content %}

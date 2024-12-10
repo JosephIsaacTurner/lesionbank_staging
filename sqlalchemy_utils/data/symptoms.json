@@ -1,0 +1,1598 @@
+[
+	{
+		"name": "ocd",
+		"description": "Lesional OCD is a form of Obsessive-Compulsive Disorder resulting from brain lesions, characterized by compulsive behaviors and obsessive thoughts.",
+		"domain": "Affective Systems",
+		"subdomain": "Habit",
+		"synonyms": [
+			"ocd",
+			"obsessive-compulsive disorder"
+		],
+		"mesh_terms": [
+			"obsessive-compulsive disorder",
+			"compulsive behavior",
+			"obsessive thought",
+			"compulsion"
+		],
+		"not_terms": [
+			"deep brain stimulation",
+			"dbs"
+		]
+	},
+	{
+		"name": "depression",
+		"description": "Depression is a mood disorder characterized by persistent feelings of sadness, loss of interest, and various physical and cognitive symptoms. We've categorized lesional anxiety as a disruption of the brain's normal positive affective systems.",
+		"domain": "Affective Systems",
+		"subdomain": "Positive Affect",
+		"synonyms": [
+			"major depressive disorder",
+			"clinical depression",
+			"depressive disorder"
+		],
+		"mesh_terms":[
+			"depression",
+			"mood disorder",
+			"major depressive disorder",
+			"clinical depression"
+		],
+		"not_terms": [
+			"deep brain stimulation",
+			"dbs",
+			"oval depression",
+			"respiratory depression",
+			"segment depression",
+			"impaired depression",
+			"myocardial depression"
+		]
+	},
+	{
+		"name": "anxiety",
+		"description": "Anxiety is a mental health disorder characterized by feelings of worry, anxiety, or fear that are strong enough to interfere with one's daily activities. We've categorized lesional anxiety as a disruption of the brain's normal positive affective systems.",
+		"domain": "Affective Systems",
+		"subdomain": "Positive Affect",
+		"synonyms": [
+			"generalized anxiety disorder",
+			"anxiety disorder",
+			"panic disorder",
+			"social anxiety disorder",
+			"dysphoria"
+		],
+		"mesh_terms":[
+			"anxiety",
+			"anxiety disorder",
+			"generalized anxiety disorder",
+			"panic disorder",
+			"social anxiety disorder"
+		],
+		"not_terms":[
+			"deep brain stimulation",
+			"dbs"
+		]
+	},
+	{
+		"name": "anhedonia",
+		"description": "Anhedonia is the inability to experience pleasure from activities usually found enjoyable, such as eating, exercise, or social interactions.",
+		"domain": "Affective Systems",
+		"subdomain": "Reward Responsiveness",
+		"synonyms": [
+			"pleasure deficit",
+			"loss of pleasure",
+			"diminished pleasure",
+			"reduced enjoyment",
+			"diminished enjoyment"
+		]
+	},
+	{
+		"name": "abulia",
+		"description": "Abulia is a neurological condition characterized by a lack of will or initiative. Individuals with abulia often show diminished motivation and an inability to make decisions or initiate actions. Athymhormia is a neuropsychiatric condition characterized by a loss of drive and motivation, often associated with damage to the basal ganglia, and is considered a synonym for abulia.",
+		"domain": "Affective Systems",
+		"subdomain": "Volition",
+		"synonyms": [
+			"lack of initiative",
+			"athymhormia",
+			"athymhormic syndrome",
+			"motivation deficit"
+		],
+		"mesh_terms": [
+			"abulia",
+			"lack of motivation",
+			"athymhormia",
+			"motivation deficit"
+		]
+	},
+	{
+		"name": "akinetic mutism",
+		"description": "Akinetic mutism is a state of unresponsiveness and lack of movement, often seen in neurological conditions affecting the frontal lobes or basal ganglia.",
+		"domain": "Affective Systems",
+		"subdomain": "Volition",
+		"synonyms": [
+			"unresponsiveness",
+			"lack of movement"
+		],
+		"mesh_terms": [
+			"akinetic mutism",
+			"lack of movement"
+		]
+	},
+	{
+		"name": "hypersexuality",
+		"description": "Hypersexuality is a condition characterized by an increased frequency or intensity of sexual thoughts, urges, or behaviors, often associated with neurological conditions or disorders such as bipolar disorder, frontotemporal dementia, or brain injury.",
+		"domain": "Affective Systems",
+		"subdomain": "Impulse Control",
+		"synonyms": [
+			"sexual disinhibition",
+			"excessive sexual drive",
+			"compulsive sexual behavior",
+			"hypersexual disorder"
+		],
+		"mesh_terms": [
+			"sexual behavior"
+		]
+	},	
+	{
+		"name": "apathy",
+		"description": "Apathy is a lack of interest, enthusiasm, or concern, often seen in various neurological and psychiatric conditions.",
+		"domain": "Affective Systems",
+		"subdomain": "Positive Affect",
+		"synonyms": [
+			"lack of interest",
+			"indifference",
+			"emotional flatness"
+		],
+		"mesh_terms": [
+			"apathy",
+			"indifference"
+		]
+	},
+	{
+		"name": "bruxism",
+		"description": "Bruxism is the involuntary grinding or clenching of teeth, often occurring during sleep and associated with stress or anxiety.",
+		"domain": "Arousal and Regulatory Systems",
+		"subdomain": "Sleep",
+		"synonyms": [
+			"teeth grinding",
+			"teeth clenching",
+			"nocturnal bruxism",
+			"sleep bruxism"
+		],
+		"mesh_terms": [
+			"bruxism",
+			"teeth grinding"
+		]
+
+	},
+	{
+		"name": "rem sleep behavior disorder",
+		"description": "REM Sleep Behavior Disorder (RBD) is a sleep disorder characterized by the acting out of dreams that occur during the REM (rapid eye movement) sleep stage. This can include talking, yelling, punching, kicking, and other movements. It is often associated with neurological conditions such as Parkinson's disease.",
+		"domain": "Arousal and Regulatory Systems",
+		"subdomain": "Sleep",
+		"synonyms": [
+			"rbd",
+			"rem behavior disorder",
+			"dream-enacting behavior",
+			"sleep movement disorder"
+		],
+		"mesh_terms": [
+			"rem sleep behavior disorder",
+			"rem behavior disorder",
+			"sleep movement disorder",
+			"sleep movement"
+		]
+	},
+	{
+		"name": "hypersomnia",
+		"description": "Hypersomnia is excessive daytime sleepiness or prolonged nighttime sleep, which can be a symptom of various sleep disorders.",
+		"domain": "Arousal and Regulatory Systems",
+		"subdomain": "Sleep",
+		"synonyms": [
+			"daytime sleepiness",
+			"excessive daytime sleepiness",
+			"prolonged sleep",
+			"hypersomnolence",
+			"excessive sleepiness"
+		],
+		"mesh_terms": [
+			"hypersomnia",
+			"excessive daytime sleepiness"
+		]
+	},
+	{
+		"name": "insomnia",
+		"description": "Insomnia is a sleep disorder characterized by difficulty falling asleep, staying asleep, or achieving restorative sleep.",
+		"domain": "Arousal and Regulatory Systems",
+		"subdomain": "Sleep",
+		"synonyms": [
+			"sleeplessness",
+			"difficulty sleeping",
+			"sleep deprivation",
+			"sleep disturbance"
+		],
+		"mesh_terms": [
+			"insomnia",
+			"sleeplessness",
+			"sleep disturbance",
+			"difficulty sleeping",
+			"sleep deprivation"
+		]
+	},
+	{
+		"name": "narcolepsy",
+		"description": "Narcolepsy is a sleep disorder characterized by excessive daytime sleepiness and sudden, uncontrollable episodes of falling asleep.",
+		"domain": "Arousal and Regulatory Systems",
+		"subdomain": "Sleep",
+		"synonyms": [
+			"sleep attacks",
+			"cataplexy"
+		],
+		"mesh_terms": [
+			"narcolepsy",
+			"cataplexy"
+		]
+	},
+	{
+		"name": "parasomnia",
+		"description": "Parasomnia is a category of sleep disorders involving abnormal movements, behaviors, or experiences during sleep, including sleepwalking and night terrors.",
+		"domain": "Arousal and Regulatory Systems",
+		"subdomain": "Sleep",
+		"synonyms": [
+			"sleep disorder",
+			"sleepwalking",
+			"night terrors",
+			"sleep behavior disorder"
+		],
+		"mesh_terms": [
+			"parasomnia",
+			"sleepwalking",
+			"night terrors",
+			"sleep behavior disorder"
+		]
+	},
+	{
+		"name": "loss of consciousness",
+		"description": "Loss of consciousness is a state in which a person is unable to respond to stimuli and appears to be asleep or unresponsive. This can occur suddenly and can result from various causes, including head injury, stroke, cardiac arrest, seizures, and severe illness.",
+		"domain": "Arousal and Regulatory Systems",
+		"subdomain": "Consciousness",
+		"synonyms": [
+			"unconsciousness",
+			"fainting",
+			"syncope",
+			"blackout",
+			"passing out"
+		],
+		"mesh_terms": [
+			"loss of consciousness",
+			"unconsciousness",
+			"fainting",
+			"syncope",
+			"blackout",
+			"passing out"
+		]
+	},
+	{
+		"name": "coma",
+		"description": "Coma is a state of prolonged unconsciousness in which a person is unresponsive to their environment and cannot be awakened. This condition can result from various causes, including severe head injury, stroke, brain tumor, drug or alcohol intoxication, or an underlying illness such as diabetes or infection.",
+		"domain": "Arousal and Regulatory Systems",
+		"subdomain": "Consciousness",
+		"synonyms": [
+			"prolonged unconsciousness",
+			"deep unconsciousness",
+			"persistent vegetative state",
+			"unresponsive state",
+			"vegetative state",
+			"brain death"
+		],
+		"mesh_terms": [
+			"coma",
+			"vegetative state",
+			"persistent vegetative state",
+			"brain death",
+			"comatose"
+		]
+	},
+	{
+		"name": "seizures",
+		"description": "Seizures are sudden, uncontrolled electrical disturbances in the brain that can cause changes in behavior, movements, feelings, and levels of consciousness.",
+		"domain": "Arousal and Regulatory Systems",
+		"subdomain": "Epilepsy",
+		"synonyms": [
+			"convulsions",
+			"fits",
+			"epileptic seizures",
+			"epileptic fits",
+			"epileptic convulsions",
+			"spasm",
+			"epilepsy",
+			"paroxysm"
+		],
+		"mesh_terms": [
+			"seizures",
+			"spasm"
+		]
+	},
+	{
+		"name": "status epilepticus",
+		"description": "Status epilepticus is a dangerous condition in which epileptic seizures follow one another without recovery of consciousness between them.",
+		"domain": "Arousal and Regulatory Systems",
+		"subdomain": "Epilepsy",
+		"synonyms": [
+			"prolonged seizure",
+			"continuous seizure",
+			"recurrent seizure",
+			"seizure emergency"
+		],
+		"mesh_terms": [
+			"status epilepticus"
+		]
+	},
+	{
+		"name": "takotsubo",
+		"description": "Lesional Takotsubo Cardiomyopathy, also known as stress-induced cardiomyopathy or broken heart syndrome, is a temporary heart condition that is often brought on by stressful situations and extreme emotions. It involves sudden weakening of the heart muscle, leading to abnormal heart muscle movement.",
+		"domain": "Arousal and Regulatory Systems",
+		"subdomain": "Autonomic and Homeostatic Functions",
+		"synonyms": [
+			"stress-induced cardiomyopathy",
+			"broken heart syndrome",
+			"apical ballooning syndrome",
+			"happy heart syndrome",
+			"voodoo death",
+			"takotsubo",
+			"stress cardiomyopathy"
+		],
+		"mesh_terms":[]
+	},
+	{
+		"name": "mathematical impairment",
+		"description": "Mathematical impairment refers to the inability to perform mathematical calculations, which can result from brain injury or neurological conditions. This includes conditions such as acalculia and anarithmetia.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Other",
+		"synonyms": [
+			"acalculia",
+			"anarithmetia",
+			"dyscalculia",
+			"mathematical disability",
+			"mathematical ability",
+			"dyscalculic"
+		],
+		"mesh_terms": [
+			"dyscalculia"
+		]
+	},
+	{
+		"name": "auditory agnosia",
+		"description": "Auditory agnosia is the inability to recognize or interpret sounds despite having normal hearing, often due to brain injury.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Perception",
+		"synonyms": [
+			"sound agnosia",
+			"acoustic agnosia"
+		],
+		"mesh_terms":[
+			"auditory perceptual disorders"
+		]
+	},
+	{
+		"name": "agraphia",
+		"description": "Agraphia is the inability to write, often due to brain injury or neurological disorders.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Language",
+		"synonyms": [
+			"dysgraphia",
+			"agraphic",
+			"writing disorder",
+			"writing impairment",
+			"graphomotor",
+			"writing disability",
+			"dysgraphic"
+		],
+		"mesh_terms":[
+			"agraphia"
+		]
+	},
+	{
+		"name": "alexia",
+		"description": "Alexia, also known as acquired dyslexia, is the inability to read despite previous reading ability, often resulting from brain injury.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Language",
+		"synonyms": [
+			"word blindness",
+			"acquired dyslexia",
+			"reading impairment",
+			"alexic",
+			"impaired reading",
+			"dyslexia",
+			"reading disorder",
+			"reading disability",
+			"specific reading disorder"			
+		],
+		"mesh_terms":[
+			"dyslexia"
+		]
+	},
+	{
+		"name": "allesthesia",
+		"description": "Allesthesia is a condition in which sensations are perceived on the opposite side of the body from where they actually occur, often associated with brain injury. Synchiria is a condition where a stimulus applied to one side of the body is perceived on both sides, often associated with brain lesions.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Perception",
+		"synonyms": [
+			"allesthesia",
+			"synchiria",
+			"allochiria",
+			"bilateral perception",
+			"dual sensation"
+		],
+		"mesh_terms": [
+			"allesthesia"
+		]
+	},
+	{
+		"name": "room tilt illusion",
+		"description": "The Room Tilt Illusion is a perceptual phenomenon where an individual perceives their surroundings as tilted or rotated. This illusion can be associated with vestibular disorders, brain lesions, or visual-vestibular conflicts.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Perception",
+		"synonyms": [
+			"tilt illusion",
+			"environmental tilt"
+		],
+		"mesh_terms": [
+			"room tilt illusion"
+		]
+	},		
+	{
+		"name": "amnesia",
+		"description": "Amnesia is a loss of memory, which can be partial or complete, and can result from brain injury, illness, or psychological factors. Types of amnesia include retrograde amnesia, which is the loss of pre-existing memories.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Memory",
+		"synonyms": [
+			"memory loss",
+			"memory impairment",
+			"memory deficit",
+			"amnestic syndrome",
+			"retrograde amnesia",
+			"amnesic",
+			"memory disorder"
+		],
+		"mesh_terms":[
+			"amnesia"
+		]
+	},
+	{
+		"name": "anosodiaphoria",
+		"description": "Anosodiaphoria is a condition in which a person is aware of their illness but shows indifference or lack of concern about it.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Sense of Self",
+		"synonyms": [
+			"lack of concern"
+		],
+		"mesh_terms":[]
+	},
+	{
+		"name": "anosognosia",
+		"description": "Anosognosia is a lack of awareness or denial of a neurological condition or deficit, often seen in stroke or dementia patients.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Sense of Self",
+		"synonyms": [
+			"unawareness of illness",
+			"denial of illness",
+			"lack of insight"
+		],
+		"mesh_terms":[]
+	},
+	{
+		"name": "aphasia",
+		"description": "Aphasia is an impairment of language ability, affecting speech, comprehension, reading, or writing, typically due to brain injury. This can include various speech disorders such as cluttering, which involves rapid and disorganized speech affecting clarity and fluency. Aphasia also encompasses general speech deficits, which are impairments in the ability to produce or comprehend spoken language.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Language",
+		"synonyms": [
+			"language impairment",
+			"speech impairment",
+			"language disorder",
+			"aphasic",
+			"cluttering",
+			"fluency disorder",
+			"rapid speech",
+			"speech deficit",
+			"speech disorder",
+			"language deficit",
+			"communication disorder",
+			"dysphasia",
+			"word deafness"
+		],
+		"mesh_terms":[
+			"aphasia"
+		]
+	},
+	{
+		"name": "attention deficits",
+		"description": "Attention deficits involve difficulty in maintaining focus, being easily distracted, and having trouble organizing tasks, often seen in ADHD and other conditions.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Executive Function",
+		"synonyms": [
+			"attention deficit",
+			"inattention",
+			"attention deficit disorder",
+			"impaired focus",
+			"concentration difficulties"
+		],
+		"mesh_terms":[
+			"attention"
+		]
+	},
+	{
+		"name": "executive dysfunction",
+		"description": "Executive dysfunction refers to difficulties with cognitive processes such as planning, organizing, problem-solving, and decision-making, often seen in conditions like ADHD and frontal lobe damage.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Executive Function",
+		"synonyms": [
+			"executive function impairment",
+			"cognitive control deficits",
+			"frontal lobe syndrome",
+			"decision-making impairment",
+			"impaired decision making"
+		],
+		"mesh_terms":[
+			"executive function",
+			"decision making"
+		]
+	},
+	{
+		"name": "autoscopy",
+		"description": "Autoscopy is a phenomenon where an individual experiences seeing their own body from an external perspective, often associated with neurological or psychiatric conditions.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Sense of Self",
+		"synonyms": [
+			"out-of-body experience",
+			"autoscopic phenomenon",
+			"autoscopic hallucination"
+		],
+		"mesh_terms":[]
+	},
+	{
+		"name": "autotopagnosia",
+		"description": "Autotopagnosia is the inability to localize and name parts of one's own body, typically due to parietal lobe damage.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Sense of Self",
+		"synonyms": [
+			"body localization",
+			"autotopoagnosia"
+		],
+		"mesh_terms":[]
+	},
+	{
+		"name": "blindsight",
+		"description": "Blindsight is a condition where individuals with cortical blindness can respond to visual stimuli without consciously perceiving them.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Perception",
+		"synonyms": [
+			"residual vision",
+			"unconscious vision",
+			"non-conscious vision"
+		],
+		"mesh_terms":[]
+	},
+	{
+		"name": "anton syndrome",
+		"description": "Anton Syndrome is a rare condition in which a person who is cortically blind due to brain damage is unaware of or denies their blindness, often confabulating visual experiences.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Perception",
+		"synonyms": [
+			"denial of blindness",
+			"Anton-Babinski Syndrome"
+		],
+		"mesh_terms":[]
+	},
+	{
+		"name": "capgras",
+		"description": "Capgras syndrome is a delusional belief that a familiar person has been replaced by an imposter, often associated with psychiatric or neurological conditions.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Reality Monitoring",
+		"synonyms": [
+			"capgras delusion",
+			"delusional misidentification",
+			"delusional misidentification syndrome"
+		],
+		"mesh_terms":[]
+	},
+	{
+		"name": "confabulation",
+		"description": "Confabulation is the production of fabricated, distorted, or misinterpreted memories about oneself or the world, without the intention to deceive.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Reality Monitoring",
+		"synonyms": [
+			"false memories",
+			"fabricated memories",
+			"memory distortion"
+		],
+		"mesh_terms":[]
+	},
+	{
+		"name": "delusion",
+		"description": "Delusion is a firmly held false belief despite clear evidence to the contrary, commonly seen in psychiatric conditions such as schizophrenia. Often accompanied by paranoia (listed as an additional term in our database).",
+		"domain": "Cognitive Systems",
+		"subdomain": "Reality Monitoring",
+		"synonyms": [
+			"false belief",
+			"irrational belief",
+			"delusional belief",
+			"delusional thinking",
+			"delusional disorder",
+			"delusional state",
+			"delusional thought"
+		],
+		"mesh_terms":[
+			"delusions"
+		]
+	},
+	{
+		"name": "size perception",
+		"description": "Size perception distortion is a visual distortion where objects appear larger or smaller than their actual size, often due to retinal or neurological conditions. This includes conditions such as micropsia and macropsia.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Perception",
+		"synonyms": [
+			"micropsia",
+			"macropsia",
+			"visual magnification",
+			"minification",
+			"enlarged vision",
+			"diminished vision"
+		],
+		"mesh_terms":[
+			"space perception"
+		]
+	},
+	{
+		"name": "alice in wonderland syndrome",
+		"description": "Alice in Wonderland Syndrome (AIWS) is a neurological condition characterized by distortions in perception, including altered perception of size, time, space, and body image. These perceptual distortions can affect vision, touch, and the sense of time, leading to a disorienting and surreal experience. Often accompanies with body image distortion, autoscopy, micropsia, macropsia, teleopsia, pelopsia, palinopsia, temporal distortions, oscillopsia, and metamorphopsia, which are listed as additional terms in our database.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Perception",
+		"synonyms": [
+			"aiws",
+			"todd's Syndrome",
+			"dysmetropsia",
+			"lilliputian hallucination",
+			"temporal distortion",
+			"time distortion",
+			"chronostasis",
+			"temporal misperception",
+			"time dilation",
+			"time contraction"
+		],
+		"mesh_terms":[
+			"alice in wonderland syndrome"
+		]
+	},
+	{
+		"name": "asomatognosia",
+		"description": "Asomatognosia is a condition where an individual is unable to recognize parts of their own body, typically due to brain injury.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Sense of Self",
+		"synonyms": [
+			"body agnosia",
+			"body unawareness",
+			"self-recognition"
+		],
+		"mesh_terms":[]
+	},
+	{
+		"name": "body image distortion",
+		"description": "Body Image Distortion is a perceptual disturbance where an individual's perception of their own body size, shape, or position is inaccurate, often associated with neurological or psychological conditions.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Perception",
+		"synonyms": [
+			"body dysmorphia",
+			"body schema disturbance",
+			"body perception disorder"
+		],
+		"mesh_terms":[
+			"body image"
+		]
+	},
+	{
+		"name": "somatoparaphrenia",
+		"description": "Somatoparaphrenia is a type of delusion where a person denies ownership of a limb or an entire side of their body, often seen in patients with right hemisphere brain damage.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Sense of Self",
+		"synonyms": [
+			"body ownership",
+			"limb ownership",
+			"body part ownership"
+		],
+		"mesh_terms":[]
+	},
+	{
+		"name": "metamorphopsia",
+		"description": "Metamorphopsia is a visual distortion where objects appear wavy, curved, or misshapen, typically caused by retinal or neurological issues.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Perception",
+		"synonyms": [
+			"visual distortion",
+			"wavy vision",
+			"distorted vision"
+		],
+		"mesh_terms":[]
+	},
+	{
+		"name": "mutism",
+		"description": "Mutism is the inability or refusal to speak, often associated with severe psychological trauma, neurological disorders, or developmental issues.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Language",
+		"synonyms": [
+			"absence of speech",
+			"speech loss",
+			"aphonia",
+			"non-speaking"
+		],
+		"mesh_terms":[
+			"aphonia"
+		]
+	},
+	{
+		"name": "neglect",
+		"description": "Neglect is a condition where a person is unaware of or ignores one side of their body or environment, often due to brain injury, particularly in the parietal lobe.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Perception",
+		"synonyms": [
+			"hemineglect",
+			"unilateral neglect",
+			"spatial neglect",
+			"neglect syndrome",
+			"hemispatial neglect",
+			"dyschiria"
+		],
+		"mesh_terms":[]
+	},
+	{
+		"name": "oscillopsia",
+		"description": "Oscillopsia is a visual disturbance where objects appear to oscillate or move back and forth, often caused by vestibular disorders or neurological conditions.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Perception",
+		"synonyms": [
+			"oscillating vision",
+			"visual instability"
+		],
+		"mesh_terms":[]
+	},
+	{
+		"name": "palilalia",
+		"description": "Palilalia is a speech disorder characterized by the involuntary repetition of words or phrases, often seen in neurological conditions like Tourette syndrome.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Language",
+		"synonyms": [
+			"repetitive speech",
+			"verbal repetition",
+			"echolalia"
+		]
+	},
+	{
+		"name": "palinopsia",
+		"description": "Palinopsia is a visual disturbance where an image continues to appear after the stimulus has been removed, often caused by neurological disorders or medication side effects.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Perception",
+		"synonyms": [
+			"visual perseveration",
+			"afterimage persistence",
+			"prolonged image"
+		]
+	},
+	{
+		"name": "paranoia",
+		"description": "Paranoia is an irrational and persistent feeling or belief that one is being persecuted, targeted, harassed, or conspired against, commonly seen in psychiatric conditions such as schizophrenia.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Reality Monitoring",
+		"synonyms": [
+			"persecutory delusions",
+			"persecutory paranoia",
+			"suspicion",
+			"delusions of persecution",
+			"paranoid delusions"
+		]
+	},
+	{
+		"name": "phonagnosia",
+		"description": "Phonagnosia is the inability to recognize familiar voices, typically resulting from brain damage affecting the right hemisphere.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Perception",
+		"synonyms": [
+			"auditory agnosia",
+			"voice recognition"
+		]
+	},
+	{
+		"name": "prosopagnosia",
+		"description": "Prosopagnosia, also known as face blindness, is the inability to recognize familiar faces, caused by damage to the fusiform gyrus in the brain.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Perception",
+		"synonyms": [
+			"face blindness",
+			"facial agnosia",
+			"face recognition impairment"
+		],
+		"mesh_terms":[
+			"prosopagnosia"
+		]
+	},
+	{
+		"name": "prosopometamorphopsia",
+		"description": "Prosopometamorphopsia is a condition where faces appear distorted, often caused by lesions or other abnormalities in the brain.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Perception",
+		"synonyms": [
+			"facial distortion",
+			"face perception"
+		],
+		"mesh_terms":[]
+	},
+	{
+		"name": "psychosis",
+		"description": "Psychosis is a severe mental disorder characterized by a disconnection from reality, which can include hallucinations, delusions, and impaired insight.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Reality Monitoring",
+		"synonyms": [
+			"mental disorder",
+			"psychotic disorder",
+			"psychotic"
+		],
+		"mesh_terms":[
+			"psychotic disorders"
+		]
+	},
+	{
+		"name": "reduplicative paramnesia",
+		"description": "Reduplicative paramnesia is a delusional belief that a familiar place has been duplicated or relocated, often seen in brain injury or dementia.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Reality Monitoring",
+		"synonyms": [],
+		"mesh_terms":[]
+	},
+	{
+		"name": "simultanagnosia",
+		"description": "Simultanagnosia is a condition where an individual cannot perceive more than one object at a time, often caused by damage to the parietal lobes.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Perception",
+		"synonyms": [
+			"simultaneous agnosia",
+			"visual attention deficit",
+			"single object perception"
+		],
+		"mesh_terms":[]
+	},
+	{
+		"name": "stuttering",
+		"description": "Stuttering is a speech disorder characterized by frequent disruptions in the flow of speech, such as repetitions, prolongations, or blocks.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Language",
+		"synonyms": [
+			"speech dysfluency",
+			"speech stammering",
+			"speech interruptions",
+			"stammering",
+			"neurogenic stuttering"
+		],
+		"mesh_terms":[
+			"stuttering"
+		]
+	},
+	{
+		"name": "supernumerary limb",
+		"description": "Supernumerary phantom limb is a phenomenon where individuals perceive the presence of an extra limb, often following an amputation or brain injury.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Sense of Self",
+		"synonyms": [
+			"extra limb",
+			"phantom limb sensation",
+			"supernumerary limb",
+			"supernumerary",
+			"phantom limb"
+		],
+		"mesh_terms":[
+			"phantom limb"
+		]
+	},
+	{
+		"name": "synesthesia",
+		"description": "Synesthesia is a condition in which stimulation of one sensory pathway leads to involuntary experiences in a second sensory pathway, such as seeing colors when hearing music.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Perception",
+		"synonyms": [
+			"cross-modal perception",
+			"multisensory perception"
+		],
+		"mesh_terms":[
+			"synesthesia"
+		]
+	},
+	{
+		"name": "distance perception distortion",
+		"description": "Distance perception distortion encompasses visual distortions where objects appear either farther away (teleopsia) or closer (pelopsia) than they actually are. These conditions are often associated with neurological conditions or visual processing disorders.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Perception",
+		"synonyms": [
+			"distance perception",
+			"teleopsia",
+			"pelopsia",
+			"distance misperception"
+		],
+		"mesh_terms": []
+	},
+	{
+		"name": "visual agnosia",
+		"description": "Visual agnosia is the inability to recognize or identify objects despite having intact vision, typically caused by damage to the visual processing areas of the brain.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Perception",
+		"synonyms": [
+			"object agnosia",
+			"visual recognition impairment",
+			"visual object agnosia"
+		],
+		"mesh_terms":[
+			"agnosia",
+			"form perception"
+		]
+	},
+	{
+		"name": "visual hallucinations",
+		"description": "Visual hallucinations are perceptions of objects or events that are not actually present, often seen in psychiatric and neurological disorders.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Reality Monitoring",
+		"synonyms": [
+			"seeing things",
+			"charles bonnet syndrome"
+		],
+		"mesh_terms":[
+			"hallucinations",
+			"charles bonnet syndrome"
+		]
+	},
+	{
+		"name": "alexithymia",
+		"description": "Alexithymia is the difficulty in identifying and describing emotions in oneself, which can impact social interactions.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Emotional Processing",
+		"synonyms": [
+			"emotional blindness",
+			"emotion identification",
+			"emotional awareness"
+		]
+	},
+	{
+		"name": "alien limb",
+		"description": "Alien limb syndrome is a condition where a person experiences a limb acting seemingly on its own, without conscious control. This often involves the hand but can include other limbs as well.",
+		"domain": "Motor Systems",
+		"subdomain": "Fine Motor",
+		"synonyms": [
+			"alien hand",
+			"alien limb syndrome",
+			"alien hand syndrome",
+			"involuntary limb movement"
+		],
+		"mesh_terms": [
+			"alien limb phenomenon"
+		]
+	},
+	{
+		"name": "apraxia",
+		"description": "Apraxia is the inability to perform purposeful movements or use objects correctly despite having the desire and physical capability to do so.",
+		"domain": "Motor Systems",
+		"subdomain": "Fine Motor",
+		"synonyms": [
+			"motor planning disorder",
+			"movement coordination",
+			"motor apraxia",
+			"ideomotor apraxia",
+			"ideational apraxia",
+			"dyspraxia"
+		],
+		"mesh_terms":[],
+		"not_terms":[
+			"dbs",
+			"deep brain stimulation"
+		]
+	},
+	{
+		"name": "ataxia",
+		"description": "Ataxia is a lack of muscle coordination during voluntary movements, which can affect speech, eye movements, and the ability to swallow.",
+		"domain": "Motor Systems",
+		"subdomain": "Gross Motor",
+		"synonyms": [
+			"lack of coordination",
+			"uncoordinated movements",
+			"muscle incoordination",
+			"clumsy movements",
+			"unsteady gait",
+			"staggering",
+			"wide-based gait",
+			"cerebellar gait",
+			"ataxic"
+		],
+		"mesh_terms":[
+			"ataxia",
+			"cerebellar ataxia"
+		],
+		"not_terms":[
+			"dbs",
+			"deep brain stimulation"
+		]
+	},
+	{
+		"name": "athetosis",
+		"description": "Athetosis is characterized by slow, involuntary, writhing movements, usually of the hands and feet, often resulting from basal ganglia damage.",
+		"domain": "Motor Systems",
+		"subdomain": "Fine Motor",
+		"synonyms": [
+			"writhing movements",
+			"continuous movements"
+		],
+		"mesh_terms":[
+			"athetosis"
+		],
+		"not_terms":[
+			"dbs",
+			"deep brain stimulation"
+		]
+	},
+	{
+		"name": "asterixis",
+		"description": "Asterixis is a motor disorder characterized by sudden, brief, and involuntary jerking movements, often of the hands, that can occur in various neurological and metabolic conditions. It is commonly seen in conditions such as liver disease and encephalopathy.",
+		"domain": "Motor Systems",
+		"subdomain": "Fine Motor",
+		"synonyms": [
+			"flapping tremor",
+			"liver flap",
+			"hand tremor",
+			"hand-flapping"
+		],
+		"mesh_terms":[],
+		"not_terms":[
+			"dbs",
+			"deep brain stimulation"
+		]
+	},
+	{
+		"name": "ballismus",
+		"description": "Ballismus is a movement disorder characterized by violent, flinging movements of the limbs, often caused by damage to the subthalamic nucleus.",
+		"domain": "Motor Systems",
+		"subdomain": "Gross Motor",
+		"synonyms": [
+			"flinging movements",
+			"violent limb movements"
+		],
+		"mesh_terms":[],
+		"not_terms":[
+			"dbs",
+			"deep brain stimulation"
+		]
+	},
+	{
+		"name": "bradykinesia",
+		"description": "Bradykinesia is the slowness of movement and is a common symptom of Parkinson's disease.",
+		"domain": "Motor Systems",
+		"subdomain": "Gross Motor",
+		"synonyms": [
+			"slow movement",
+			"movement slowness",
+			"parkinsonian bradykinesia",
+			"parkinsonism"
+		],
+		"mesh_terms":[],
+		"not_terms":[
+			"dbs",
+			"deep brain stimulation"
+		]
+	},
+	{
+		"name": "chorea",
+		"description": "Chorea is a movement disorder characterized by brief, irregular, and involuntary movements, often seen in conditions like Huntington's disease.",
+		"domain": "Motor Systems",
+		"subdomain": "Gross Motor",
+		"synonyms": [
+			"irregular movements",
+			"brief involuntary movements",
+			"choreiform movements",
+			"dance-like movements",
+			"hemichorea",
+			"hemiballismus"
+		],
+		"mesh_terms":[
+			"chorea"
+		],
+		"not_terms":[
+			"dbs",
+			"deep brain stimulation"
+		]
+	},
+	{
+		"name": "dysarthria",
+		"description": "Dysarthria is a motor speech disorder resulting from neurological injury, leading to poor articulation and speech difficulties.",
+		"domain": "Motor Systems",
+		"subdomain": "Fine Motor",
+		"synonyms": [
+			"articulation disorder",
+			"motor speech impairment"
+		],
+		"mesh_terms":[
+			"dysarthria"
+		],
+		"not_terms":[
+			"dbs",
+			"deep brain stimulation"
+		]
+	},
+	{
+		"name": "dysphagia",
+		"description": "Dysphagia is a condition characterized by difficulty or discomfort in swallowing, which can result from neurological disorders, structural abnormalities, or other medical conditions.",
+		"domain": "Motor Systems",
+		"subdomain": "Gross Motor",
+		"synonyms": [
+			"swallowing difficulty",
+			"swallowing disorder",
+			"impaired swallowing",
+			"difficulty swallowing"
+		],
+		"mesh_terms":[
+			"deglutition disorders"
+		],
+		"not_terms":[
+			"dbs",
+			"deep brain stimulation"
+		]
+	},
+	{
+		"name": "dysdiadochokinesia",
+		"description": "Dysdiadochokinesia is the inability to perform rapid, alternating movements, typically resulting from cerebellar dysfunction.",
+		"domain": "Motor Systems",
+		"subdomain": "Gross Motor",
+		"synonyms": [
+			"alternating movement",
+			"cerebellar movement disorder",
+			"rapid movement"
+		],
+		"mesh_terms":[],
+		"not_terms":[
+			"dbs",
+			"deep brain stimulation"
+		]
+	},
+	{
+		"name": "paralysis",
+		"description": "Hemiparesis and hemiplegia refer to the weakness or paralysis of one side of the body, often resulting from stroke or brain injury. Hemiparesis describes partial paralysis or weakness, while hemiplegia describes complete paralysis.",
+		"domain": "Motor Systems",
+		"subdomain": "Gross Motor",
+		"synonyms": [
+			"paresis",
+			"quadriplegia",
+			"quadriplegic",
+			"unilateral weakness",
+			"partial paralysis",
+			"one-sided weakness",
+			"unilateral paralysis",
+			"paralysis",
+			"total hemiplegia",
+			"hemiparesis",
+			"hemiplegia",
+			"hemiparetic",
+			"hemiplegic",
+			"bilateral paralysis",
+			"total paralysis"
+		]
+	},
+	{
+		"name": "parkinsonian gait",
+		"description": "Parkinsonian gait is a distinctive walking pattern characterized by small, shuffling steps and a stooped posture, commonly seen in Parkinson's disease.",
+		"domain": "Motor Systems",
+		"subdomain": "Gross Motor",
+		"synonyms": [
+			"shuffling gait",
+			"Parkinson's gait",
+			"stooped posture",
+			"freezing of gait",
+			"freezing gait"
+		],
+		"mesh_terms":[
+			"gait"
+		],
+		"not_terms":[
+			"dbs",
+			"deep brain stimulation"
+		]
+	},
+	{
+		"name": "stereotypy",
+		"description": "Stereotypy refers to repetitive, fixed patterns of physical movements or speech, often seen in neurological or developmental disorders.",
+		"domain": "Motor Systems",
+		"subdomain": "Gross Motor",
+		"synonyms": [
+			"fixed movement patterns"
+		],
+		"mesh_terms":[]
+	},
+	{
+		"name": "tics",
+		"description": "Tics are sudden, repetitive, non-rhythmic motor movements or vocalizations, commonly seen in Tourette syndrome and other neurological conditions.",
+		"domain": "Motor Systems",
+		"subdomain": "Gross Motor",
+		"synonyms": [
+			"motor tics",
+			"vocal tics",
+			"involuntary movements",
+			"cluster-tic"
+		],
+		"mesh_terms":[
+			"tics"
+		]
+	},
+	{
+		"name": "cervical dystonia",
+		"description": "Cervical dystonia, also known as spasmodic torticollis, is a neurological movement disorder characterized by involuntary muscle contractions in the neck that cause abnormal movements and postures of the head and neck. Symptoms can include neck pain and tremors.",
+		"domain": "Motor Systems",
+		"subdomain": "Gross Motor",
+		"synonyms": [
+			"spasmodic torticollis",
+			"neck dystonia",
+			"cervical muscle spasms",
+			"neck muscle contractions"
+		],
+		"mesh_terms":[],
+		"not_terms":[
+			"dbs",
+			"deep brain stimulation"
+		]
+	},
+	{
+		"name": "dystonia",
+		"description": "Dystonia is a neurological movement disorder characterized by involuntary muscle contractions that cause repetitive or twisting movements and abnormal postures. It can affect one part of the body (focal dystonia), multiple parts (segmental dystonia), or the entire body (generalized dystonia). Symptoms can vary in severity and may be painful.",
+		"domain": "Motor Systems",
+		"subdomain": "Gross Motor",
+		"synonyms": [
+			"involuntary muscle contractions",
+			"repetitive movements",
+			"muscle spasms",
+			"abnormal postures"
+		],
+		"mesh_terms":[
+			"dystonia"
+		],
+		"not_terms":[
+			"dbs",
+			"deep brain stimulation"
+		]
+	},
+	{
+		"name": "holmes tremor",
+		"description": "Holmes Tremor is a rare neurological disorder characterized by a combination of resting, postural, and intention tremors. It typically results from lesions in the brainstem, thalamus, or midbrain, often following a stroke, traumatic brain injury, or multiple sclerosis.",
+		"domain": "Motor Systems",
+		"subdomain": "Gross Motor",
+		"synonyms": [
+			"rubral tremor",
+			"midbrain tremor"
+		],
+		"mesh_terms":[],
+		"not_terms":[
+			"dbs",
+			"deep brain stimulation"
+		]
+	},
+	{
+		"name": "cortical blindness",
+		"description": "Cortical blindness is the loss of vision due to damage to the visual cortex, despite the eyes and optic nerves being intact.",
+		"domain": "Sensory Systems",
+		"subdomain": "Visual",
+		"synonyms": [
+			"cerebral blindness",
+			"cortical visual impairment",
+			"cortical vision loss",
+			"blindness"
+		],
+		"mesh_terms":[
+			"blindness"
+		]
+	},
+	{
+		"name": "color agnosia",
+		"description": "Color agnosia is the inability to recognize or identify colors, despite having normal color vision, typically due to brain damage.",
+		"domain": "Sensory Systems",
+		"subdomain": "Visual",
+		"synonyms": [
+			"cerebral achromatopsia",
+			"color anomia",
+			"color recognition",
+			"achromatopsia",
+			"total color blindness",
+			"color vision deficiency",
+			"complete color blindness"
+		],
+		"mesh_terms":[]
+	},
+	{
+		"name": "allodynia",
+		"description": "Allodynia is a condition where normal, non-painful stimuli are perceived as painful. It is often associated with hyperesthesia, which is an increased sensitivity to sensory stimuli, such as touch or pain. These conditions represent abnormal sensory processing, where the threshold for pain and sensory perception is lowered.",
+		"domain": "Sensory Systems",
+		"subdomain": "Somatosensory",
+		"synonyms": [
+			"painful sensation",
+			"painful touch",
+			"pain hypersensitivity",
+			"hyperalgesia",
+			"hyperpathia",
+			"hyperesthesia",
+			"sensory hyperactivity",
+			"increased sensitivity",
+			"heightened sensitivity"
+		],
+		"mesh_terms": [
+			"hyperesthesia"
+		]
+	},
+	{
+		"name": "dysesthesia",
+		"description": "Dysesthesia is an abnormal and unpleasant sensation, often described as burning, tingling, prickling, numbness, or electric shock-like, usually caused by nerve damage or compression.",
+		"domain": "Sensory Systems",
+		"subdomain": "Somatosensory",
+		"synonyms": [
+			"abnormal sensation",
+			"burning sensation",
+			"tingling sensation",
+			"nerve pain",
+			"prickling sensation",
+			"numbness",
+			"pins and needles",
+			"paresthesia"
+		],
+		"mesh_terms":[]
+	},
+	{
+		"name": "central pain",
+		"description": "Central pain is a neurological condition characterized by chronic pain that results from damage or dysfunction within the central nervous system, including the brain and spinal cord. The pain can vary in intensity and type, including burning, aching, or stabbing sensations.",
+		"domain": "Sensory Systems",
+		"subdomain": "Somatosensory",
+		"synonyms": [
+			"central neuropathic pain",
+			"CNS pain",
+			"central pain syndrome",
+			"centralized pain"
+		],
+		"mesh_terms":[
+			"pain"
+		]
+	},
+	{
+		"name": "akinetopsia",
+		"description": "Akinetopsia, also known as motion blindness, is a condition where an individual cannot perceive motion, caused by brain damage.",
+		"domain": "Sensory Systems",
+		"subdomain": "Visual",
+		"synonyms": [
+			"motion blindness",
+			"motion perception deficit"
+		],
+		"mesh_terms":[]
+	},
+	{
+		"name": "astereognosia",
+		"description": "Astereognosia, also known as astereognosis, is the inability to identify objects by touch alone, without the aid of vision, despite having intact sensory abilities.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Perception",
+		"synonyms": [
+			"astereognosis",
+			"tactile agnosia",
+			"kluver-bucy syndrome"
+		],
+		"mesh_terms":[
+			"kluver-bucy syndrome"
+		]
+	},
+	{
+		"name": "hyperacusis",
+		"description": "Hyperacusis is an increased sensitivity to normal environmental sounds, often resulting in discomfort or pain.",
+		"domain": "Sensory Systems",
+		"subdomain": "Auditory",
+		"synonyms": [
+			"sound sensitivity",
+			"auditory hyperesthesia",
+			"misophonia"
+		],
+		"mesh_terms":[
+			"hyperacusis"
+		]
+	},
+	{
+		"name": "sound localization impairment",
+		"description": "Sound localization impairment is a condition where an individual has difficulty determining the origin of sounds in their environment, often due to damage or dysfunction in the auditory system.",
+		"domain": "Sensory Systems",
+		"subdomain": "Auditory",
+		"synonyms": [
+			"auditory localization",
+			"spatial hearing",
+			"sound localization",
+			"localization deficit"
+		],
+		"mesh_terms":[]
+	},
+	{
+		"name": "auditory hallucinations",
+		"description": "Auditory hallucinations are perceptions of sounds or voices that are not actually present, often associated with psychiatric conditions like schizophrenia.",
+		"domain": "Sensory Systems",
+		"subdomain": "Auditory",
+		"synonyms": [
+			"hearing voices",
+			"auditory delusions",
+			"voice hearing"
+		],
+		"mesh_terms":[]
+	},
+	{
+		"name": "hypoesthesia",
+		"description": "Hypoesthesia is a reduced sense of touch or sensation, often resulting from nerve damage or neurological disorders.",
+		"domain": "Sensory Systems",
+		"subdomain": "Somatosensory",
+		"synonyms": [
+			"reduced touch sensitivity",
+			"diminished sensation",
+			"sensory deficit",
+			"impaired touch sensation",
+			"somatosensory loss",
+			"hemianesthesia",
+			"anesthesia"
+		],
+		"mesh_terms":[]
+	},
+	{
+		"name": "dysosmia",
+		"description": "Dysosmia refers to disorders of smell, including anosmia (complete loss of sense of smell), hyposmia (reduced ability to detect odors), and hyperosmia (increased sensitivity to odors). These conditions can result from various causes such as head trauma, respiratory infections, neurological disorders, or during pregnancy. Anosmia is the most severe form, representing a total loss of smell.",
+		"domain": "Sensory Systems",
+		"subdomain": "Olfactory",
+		"synonyms": [
+			"reduced sense of smell",
+			"olfactory deficit",
+			"smell impairment",
+			"olfactory sensitivity",
+			"hyposmia",
+			"hyperosmia",
+			"anosmia",
+			"loss of smell",
+			"smell blindness",
+			"olfactory loss"
+		],
+		"mesh_terms": [
+			"anosmia"
+		]
+	},
+	{
+		"name": "olfactory hallucinations",
+		"description": "Olfactory hallucinations are the perception of smells that are not present, which can range from pleasant to foul odors. These hallucinations are often caused by neurological disorders, olfactory dysfunction, or brain lesions.",
+		"domain": "Sensory Systems",
+		"subdomain": "Olfactory",
+		"synonyms": [
+			"phantosmia",
+			"cacosmia",
+			"phantom smells"
+		],
+		"mesh_terms":[]
+	},
+	{
+		"name": "visual field defect",
+		"description": "A visual field defect is a loss of part of the usual field of vision, often due to damage to the retina, optic nerve, or brain. This includes conditions such as hemianopia and quadrantanopia, which are characterized by the loss of vision in half or a quarter of the visual field, respectively.",
+		"domain": "Sensory Systems",
+		"subdomain": "Visual",
+		"synonyms": [
+			"visual field loss",
+			"field of vision",
+			"vision impairment",
+			"hemianopia",
+			"half vision",
+			"hemianopsia",
+			"quadrantanopia",
+			"partial visual field loss"
+		],
+		"mesh_terms":[
+			"hemianopsia",
+			"visual fields"
+		]
+	},
+	{
+		"name": "vertigo",
+		"description": "Vertigo is a sensation of spinning or dizziness, where a person feels as if they or their surroundings are moving when they are not. It is often caused by problems with the inner ear or the brain, including conditions like benign paroxysmal positional vertigo (BPPV), vestibular neuritis, Meniere's disease, or migraines.",
+		"domain": "Sensory Systems",
+		"subdomain": "Vestibular",
+		"synonyms": [
+			"dizziness",
+			"spinning sensation",
+			"balance disorder",
+			"rotational dizziness"
+		],
+		"mesh_terms":[
+			"vertigo"
+		]
+	},
+	{
+		"name": "amusia",
+		"description": "Amusia is the inability to perceive or produce music, which can be congenital or acquired.",
+		"domain": "Cognitive Systems",
+		"subdomain": "Other",
+		"synonyms": [
+			"music agnosia",
+			"musical impairment",
+			"pitch perception deficit",
+			"musical tone",
+			"tone deaf",
+			"tone deafness",
+			"amusic",
+			"amusical"
+		],
+		"mesh_terms":[
+			"music"
+		]
+	},
+	{
+		"name": "tinnitus",
+		"description": "Tinnitus is the perception of noise or ringing in the ears when no external sound is present. It can be a symptom of various underlying conditions, such as hearing loss, ear infections, or neurological disorders.",
+		"domain": "Sensory Systems",
+		"subdomain": "Auditory",
+		"synonyms": [
+			"ringing in the ears",
+			"ear noise",
+			"phantom sound"
+		],
+		"mesh_terms":[
+			"tinnitus"
+		]
+	},
+	{
+		"name": "pseudobulbar affect",
+		"description": "Pseudobulbar affect (PBA) is a neurological condition characterized by uncontrollable episodes of laughing or crying that are disproportionate to the individual's emotional state. PBA is often associated with neurological conditions such as multiple sclerosis, ALS, stroke, or traumatic brain injury.",
+		"domain": "Affective Systems",
+		"subdomain": "Impulse Control",
+		"synonyms": [
+			"emotional lability",
+			"involuntary emotional expression disorder",
+			"ieed",
+			"emotional incontinence",
+			"affective lability",
+			"pathological laughter",
+			"pathological crying",
+			"pathological laughing"
+		],
+		"mesh_terms":[]
+	},
+	{
+		"name": "mania",
+		"description": "Mania is a state of abnormally elevated mood, energy, and activity levels, often seen in bipolar disorder. We've categorized lesional mania as a disruption of the brain's normal systems for Threat and Risk Evaluation.",
+		"domain": "Affective Systems",
+		"subdomain": "Threat and Risk Evaluation",
+		"synonyms": [
+			"manic episode",
+			"elevated mood",
+			"hyperactivity",
+            "flight of ideas",
+            "grandiosity",
+			"hypomania",
+			"manic",
+			"hyperthymia",
+			"hypomanic",
+			"hyperthymic",
+			"pathalogical gambling"
+		],
+		"mesh_terms": [
+			"mania",
+			"manic episode",
+			"elevated mood"
+		]
+	},
+	{
+		"name": "aggression",
+		"description": "Aggression is a behavioral response characterized by hostile or violent behavior towards others, which can be verbal or physical. It may be a symptom of various neurological or psychiatric conditions, often resulting from disruptions in brain regions responsible for impulse control, emotional regulation, and social behavior. Common causes include brain lesions, traumatic brain injury, frontal lobe damage, and certain neurodegenerative diseases.",
+		"domain": "Affective Systems",
+		"subdomain": "Impulse Control",
+		"synonyms": [
+			"hostility",
+			"anger",
+			"violence",
+			"aggressive behavior",
+			"rage"
+		],
+		"mesh_terms":[
+			"aggression",
+			"rage",
+			"anger",
+			"hostility"
+		]
+
+	}
+]

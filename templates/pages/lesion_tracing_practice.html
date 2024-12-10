@@ -1,0 +1,187 @@
+<!-- templates/pages/lesion_tracing_practice.html -->
+
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}Lesion Tracing Practice{% endblock title %}
+
+{% block content %}
+<div class="mt-4 mb-4">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-8">
+            <h1 class="display-4 text-start mb-3">Lesion Tracing Practice - Level {{ level.level_number }}</h1>
+        </div>
+        <!-- Display Messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message|safe }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <p class="lead">
+                Introductory course in lesion tracing for students and researchers.
+            </p>
+            <p class="text-muted">
+                Provided below is an image of a brain lesion from a published case report. Please trace the lesion using 3D Slicer and upload the ROI file.
+            </p>
+            <p><b>Description:</b> {{ level.description }}</p>
+        </div>
+    </div>
+</div>
+
+<!-- Display Original Image -->
+<div class="row mb-4">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        {% if level.original_image_path %}
+            <div class="card">
+                <div class="card-header">
+                    Original Image
+                </div>
+                <div class="card-body">
+                    <img src="{{ level.original_image_path.url }}" alt="Original Lesion Image" class="img-fluid">
+                </div>
+            </div>
+        {% else %}
+            <p class="text-danger">No original image available for this level.</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Display True Lesion Mask Download Link (Only if user has submitted at least once) -->
+{% if user_already_submitted %}
+    <div class="row mb-4">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    True Lesion Mask
+                </div>
+                <div class="card-body">
+                    <a href="{{ level.lesion_mask_path.url }}" class="btn btn-secondary" target="_blank">Download True Lesion Mask</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <div class="row mb-4">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="alert alert-info" role="alert">
+                Submit your first attempt to access the True Lesion Mask.
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+<!-- Display User's Maximum Previous Score -->
+{% if score %}
+    <div class="row mb-4">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    Your Highest Score
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Score: {{ score }} / 100</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+<!-- Display Passing Status -->
+{% if user_already_submitted %}
+    <div class="row mb-4">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            {% if user_passed %}
+                <div class="alert alert-success" role="alert">
+                    Congratulations! You have passed this level.
+                </div>
+            {% else %}
+                <div class="alert alert-warning" role="alert">
+                    You have not yet passed this level. Keep trying to improve your score!
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}
+
+<!-- Certificate Button -->
+{% if user_completed_all_levels %}
+    <div class="row mb-4">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    Congratulations!
+                </div>
+                <div class="card-body">
+                    <p>You have successfully completed all levels!</p>
+                    <a href="{% url 'lesion_tracing_completion' %}" class="btn btn-success">View Certificate</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+<!-- Upload Form -->
+<div class="row mb-4">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                Upload Your Traced Lesion
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Navigation Buttons -->
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8 d-flex justify-content-between">
+        {% if previous_level %}
+            <a href="{% url 'lesion_tracing_practice' level_id=previous_level.id %}" class="btn btn-outline-secondary">
+                &laquo; Previous Level ({{ previous_level.level_number }})
+            </a>
+        {% else %}
+            <button class="btn btn-outline-secondary" disabled>&laquo; Previous Level</button>
+        {% endif %}
+
+        {% if next_level %}
+            {% if user_passed %}
+                <a href="{% url 'lesion_tracing_practice' level_id=next_level.id %}" class="btn btn-outline-secondary">
+                    Next Level ({{ next_level.level_number }}) &raquo;
+                </a>
+            {% else %}
+                <button class="btn btn-outline-secondary" disabled title="Complete the current level to unlock the next one.">
+                    Next Level ({{ next_level.level_number }}) &raquo;
+                </button>
+            {% endif %}
+        {% else %}
+            <button class="btn btn-outline-secondary" disabled>Next Level &raquo;</button>
+        {% endif %}
+    </div>
+</div>
+
+<br>
+
+{% endblock content %}

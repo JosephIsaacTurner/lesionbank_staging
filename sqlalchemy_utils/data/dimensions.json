@@ -1,0 +1,10 @@
+[
+    {
+        "name": "2d",
+        "description": "Lesion traced in 2D from literature."
+    },
+    {
+        "name": "3d",
+        "description": "Lesion in 3d, often from a scan."
+    }
+]
