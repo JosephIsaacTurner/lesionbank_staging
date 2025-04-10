@@ -189,7 +189,6 @@ class SubjectForm(forms.ModelForm):
         label='Symptoms'
     )
     
-    # Updated Field for Associating Case Report
     case_report = forms.ModelChoiceField(
         queryset=CaseReport.objects.all(),
         required=False,

@@ -444,7 +444,7 @@ class ImageModality(BaseModel):
         
 def case_report_file_path(instance, filename):
     # URL-encode the DOI
-    doi = instance.doi or 'unknown'
+    doi = instance.doi or f'unknown{instance.id}'
     doi_encoded = quote_plus(doi)
     print(f'case_reports/doi-{doi_encoded}/doi-{doi_encoded}.pdf')
     return f'case_reports/doi-{doi_encoded}/doi-{doi_encoded}.pdf'
@@ -600,6 +600,7 @@ class ResearchPaper(BaseModel):
     comments = models.TextField(null=True, blank=True)
     first_author = models.ForeignKey('Author', related_name='first_authored_papers_set', on_delete=models.CASCADE)
     authors = models.ManyToManyField('Author', through='ResearchPaperAuthor', related_name='co_authored_papers_set')
+    # group_level_map_files = models.ForeignKey('GroupLevelMapFile', related_name='research_papers_set', on_delete=models.CASCADE, null=True, blank=True)
     symptoms = models.ManyToManyField('Symptom', through='ResearchPaperSymptom', related_name='research_papers_set')
     tags = models.ManyToManyField('Tag', related_name='research_papers')
     subjects = models.ManyToManyField('Subject', through='SubjectResearchPaper', related_name='research_papers')

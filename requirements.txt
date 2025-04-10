@@ -51,3 +51,4 @@ scipy
 git+https://github.com/JosephIsaacTurner/pfc-toolkit@s3_development
 tqdm
 netifaces
+django-storages[boto3]

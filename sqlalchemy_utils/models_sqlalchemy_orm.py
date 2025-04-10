@@ -30,7 +30,6 @@ class User(TrueBase):
     level_progress: Mapped[List["UserLevelProgress"]] = relationship('UserLevelProgress', back_populates='user')
     usage_logs: Mapped[List["UsageLog"]] = relationship('UsageLog', back_populates='user')
 
-
 class BaseNoUser(TrueBase):
     __abstract__ = True
 

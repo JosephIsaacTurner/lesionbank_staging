@@ -48,6 +48,14 @@ environ.Env.read_env(str(BASE_DIR / '.env'))
 if not settings.configured:
     settings.configure()
 
+# Initialize environment variables
+DO_ACCESS_KEY_ID = env('DO_SPACES_ACCESS_KEY_ID')
+DO_SECRET_ACCESS_KEY = env('DO_SPACES_SECRET_ACCESS_KEY')
+DO_STORAGE_BUCKET_NAME = env('DO_SPACES_BUCKET_NAME')
+DO_S3_ENDPOINT_URL = env('DO_SPACES_ENDPOINT_URL')
+DO_SPACES_LOCATION = env('DO_SPACES_LOCATION', default='nyc3')
+DO_LOCATION = env('DO_LOCATION')
+
 """Random helper functions"""
 
 def numpy_to_python_type(value): return float(value) if hasattr(value, "dtype") and np.issubdtype(value.dtype, np.floating) else int(value) if hasattr(value, "dtype") and np.issubdtype(value.dtype, np.integer) else value
@@ -323,8 +331,8 @@ def apply_parcellation(voxelwise_map, parcellation, strategy='mean', return_regi
 
 """SQL helper functions"""
 
-def get_user_id(session: _Session) -> int:
-    user = session.query(User).filter_by(username="josephturner").first()
+def get_user_id(session: _Session, username: str = "josephturner") -> int:
+    user = session.query(User).filter_by(username=username).first()
     if not user:
         user = User(
             username="josephturner",
@@ -1371,6 +1379,32 @@ def insert_domains_from_json(json_file_path: str, db_session: _Session, override
     finally:
         db_session.close()
 
+
+# Function to get S3 client
+def get_s3_client():
+    session = boto3.session.Session()
+    client = session.client('s3',
+        config=Config(s3={'addressing_style': 'virtual'}),
+        region_name=DO_SPACES_LOCATION,
+        endpoint_url=DO_S3_ENDPOINT_URL,
+        aws_access_key_id=DO_ACCESS_KEY_ID,
+        aws_secret_access_key=DO_SECRET_ACCESS_KEY,
+    )
+    return client
+
+
+# Function to upload file to S3
+def upload_to_s3(file_path, s3_key):
+    s3_client = get_s3_client()
+    bucket_name = DO_STORAGE_BUCKET_NAME
+    try:
+        s3_client.upload_file(os.path.join(DO_LOCATION, file_path), bucket_name, s3_key)
+        print(f"✅ Uploaded {file_path} to S3 bucket '{bucket_name}' with key '{s3_key}'.")
+    except Exception as e:
+        print(f"❌ Error uploading {file_path} to S3: {str(e)}")
+        raise
+
+
 def insert_levels_from_json(json_file_path: str, db_session: _Session, override_existing: Optional[bool] = False):
     """
     Parses a JSON file and inserts levels into the database, avoiding duplicates.
@@ -1381,38 +1415,6 @@ def insert_levels_from_json(json_file_path: str, db_session: _Session, override_
         db_session (Session): The SQLAlchemy session object for database operations.
         override_existing (bool): If true, existing records will be replaced with new data.
     """
-
-    # Initialize environment variables
-    env = environ.Env()
-    DO_ACCESS_KEY_ID = env('DO_SPACES_ACCESS_KEY_ID')
-    DO_SECRET_ACCESS_KEY = env('DO_SPACES_SECRET_ACCESS_KEY')
-    DO_STORAGE_BUCKET_NAME = env('DO_SPACES_BUCKET_NAME')
-    DO_S3_ENDPOINT_URL = env('DO_SPACES_ENDPOINT_URL')
-    DO_SPACES_LOCATION = env('DO_SPACES_LOCATION', default='nyc3')
-    DO_LOCATION = env('DO_LOCATION')
-
-    # Function to get S3 client
-    def get_s3_client():
-        session = boto3.session.Session()
-        client = session.client('s3',
-            config=Config(s3={'addressing_style': 'virtual'}),
-            region_name=DO_SPACES_LOCATION,
-            endpoint_url=DO_S3_ENDPOINT_URL,
-            aws_access_key_id=DO_ACCESS_KEY_ID,
-            aws_secret_access_key=DO_SECRET_ACCESS_KEY,
-        )
-        return client
-
-    # Function to upload file to S3
-    def upload_to_s3(file_path, s3_key):
-        s3_client = get_s3_client()
-        bucket_name = DO_STORAGE_BUCKET_NAME
-        try:
-            s3_client.upload_file(os.path.join(DO_LOCATION, file_path), bucket_name, s3_key)
-            print(f"✅ Uploaded {file_path} to S3 bucket '{bucket_name}' with key '{s3_key}'.")
-        except Exception as e:
-            print(f"❌ Error uploading {file_path} to S3: {str(e)}")
-            raise
 
     try:
         with open(json_file_path, 'r') as file:
