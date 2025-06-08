@@ -67,11 +67,6 @@
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
 
-                    <!-- Library Menu Item -->
-                    <li class="nav-item">
-                        <a class="nav-link {% if page_name in 'case_report_library case_report_detail add_subject_to_case_report edit_case_report' %}active{% endif %}" href="{% url 'case_report_library' %}">Library</a>
-                    </li>
-
                     <!-- Lesion Library Menu Item -->
                     <li class="nav-item">
                         <a class="nav-link {% if page_name in 'lesion_library subject_detail edit_subject add_dangling_subject' %}active{% endif %}" href="{% url 'lesion_library' %}">Lesions</a>
@@ -90,6 +85,11 @@
                     <!-- Predict Menu Item -->
                     <li class="nav-item">
                         <a class="nav-link {% if page_name in 'Analyze Decode Decode_Results Analyze_Results' %}active{% endif %}" href="{% url 'analyze' %}">Analyze</a>
+                    </li>
+
+                    <!-- Library Menu Item -->
+                    <li class="nav-item">
+                        <a class="nav-link {% if page_name in 'case_report_library case_report_detail add_subject_to_case_report edit_case_report' %}active{% endif %}" href="{% url 'case_report_library' %}">Library</a>
                     </li>
                     
                     <!-- FAQ Menu Item -->
