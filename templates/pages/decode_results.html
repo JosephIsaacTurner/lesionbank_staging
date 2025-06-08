@@ -79,15 +79,46 @@
 {{ raw_results|json_script:"raw-results" }}
 
 <script>
-    // Retrieve the JSON data from the script tags
-    const groupedResults = JSON.parse(
-        document.getElementById('grouped-results').textContent.replace(/NaN/g, 'null')
-    );
-    const rawResults = JSON.parse(
-        document.getElementById('raw-results').textContent.replace(/NaN/g, 'null')
-    );
-    
-    // Function to convert JSON to CSV
+    /**
+     * Safely retrieves and parses JSON data from a script tag,
+     * cleaning non-standard values like NaN, Infinity, and -Infinity.
+     * @param {string} elementId The ID of the script tag containing the JSON.
+     * @returns {object | null} The parsed JSON object or null on error.
+     */
+    function safeJsonParse(elementId) {
+        const element = document.getElementById(elementId);
+        if (!element) {
+            console.error(`Element with ID "${elementId}" not found.`);
+            return null;
+        }
+
+        const rawJson = element.textContent;
+
+        // Replace Python's non-standard numeric representations with valid JSON `null`.
+        // It is crucial to replace '-Infinity' before 'Infinity'.
+        const cleanJson = rawJson
+            .replace(/-Infinity/g, 'null')
+            .replace(/Infinity/g, 'null')
+            .replace(/NaN/g, 'null');
+
+        try {
+            return JSON.parse(cleanJson);
+        } catch (e) {
+            console.error(`Error parsing JSON from element #${elementId}:`, e);
+            console.error('Cleaned JSON string for debugging:', cleanJson);
+            return null; // Return null if parsing fails
+        }
+    }
+
+    // Retrieve and parse the data safely
+    const groupedResults = safeJsonParse('grouped-results');
+    const rawResults = safeJsonParse('raw-results');
+
+    /**
+     * Converts an array of JSON objects to a CSV string.
+     * @param {Array<object>} jsonData The data to convert.
+     * @returns {string} The resulting CSV string.
+     */
     function jsonToCSV(jsonData) {
         if (!jsonData || jsonData.length === 0) {
             return '';
@@ -96,32 +127,48 @@
         const keys = Object.keys(jsonData[0]);
         const csvRows = [];
 
-        // Add the header
+        // Add the header row
         csvRows.push(keys.join(','));
 
-        // Add the rows
-        jsonData.forEach(obj => {
-            const row = keys.map(k => {
-                let val = obj[k];
-                if (typeof val === 'string') {
-                    // Escape double quotes in strings
-                    val = val.replace(/"/g, '""');
-                    // Wrap in double quotes
-                    return `"${val}"`;
+        // Add the data rows
+        for (const row of jsonData) {
+            const values = keys.map(key => {
+                let cell = row[key];
+
+                if (cell === null || cell === undefined) {
+                    return ''; // Represent null/undefined as empty strings
                 }
-                return val;
-            }).join(',');
-            csvRows.push(row);
-        });
+
+                cell = String(cell);
+
+                // Escape double quotes by doubling them and wrap the cell in quotes
+                // if it contains a comma, a double quote, or a newline.
+                if (cell.search(/("|,|\n)/g) >= 0) {
+                    cell = `"${cell.replace(/"/g, '""')}"`;
+                }
+                return cell;
+            });
+            csvRows.push(values.join(','));
+        }
 
         return csvRows.join('\n');
     }
 
-    // Function to trigger download
+    /**
+     * Triggers the download of a CSV file.
+     * @param {string} filename The desired name of the file.
+     * @param {string} csvContent The CSV content to download.
+     */
     function downloadCSV(filename, csvContent) {
+        if (!csvContent) {
+            alert("No data available to download.");
+            return;
+        }
+
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement("a");
-        if (link.download !== undefined) { // feature detection
+
+        if (link.download !== undefined) {
             const url = URL.createObjectURL(blob);
             link.setAttribute("href", url);
             link.setAttribute("download", filename);
@@ -132,17 +179,23 @@
         }
     }
 
-    // Event listeners for download buttons
-    document.getElementById('download-grouped').addEventListener('click', function() {
-        console.log('Downloading grouped results...');
-        const csv = jsonToCSV(groupedResults);
-        downloadCSV('grouped_results.csv', csv);
-    });
+    // Attach event listeners to download buttons
+    const downloadGroupedBtn = document.getElementById('download-grouped');
+    if (downloadGroupedBtn) {
+        downloadGroupedBtn.addEventListener('click', function() {
+            console.log('Downloading grouped results...');
+            const csv = jsonToCSV(groupedResults);
+            downloadCSV('grouped_results.csv', csv);
+        });
+    }
 
-    document.getElementById('download-raw').addEventListener('click', function() {
-        console.log('Downloading raw results...');
-        const csv = jsonToCSV(rawResults);
-        downloadCSV('raw_results.csv', csv);
-    });
+    const downloadRawBtn = document.getElementById('download-raw');
+    if (downloadRawBtn) {
+        downloadRawBtn.addEventListener('click', function() {
+            console.log('Downloading raw results...');
+            const csv = jsonToCSV(rawResults);
+            downloadCSV('raw_results.csv', csv);
+        });
+    }
 </script>
 {% endblock content %}
