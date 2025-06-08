@@ -22,6 +22,7 @@ from sqlalchemy.sql import text
 from sqlalchemy_utils import db_utils
 from sqlalchemy_utils.db_session import get_session
 from django.core.exceptions import ValidationError
+from django.utils.text import slugify
 
 # Local application imports
 from .models import (
@@ -833,7 +834,10 @@ class BaseGroupLevelMapForm(forms.ModelForm):
             elif instance.symptom:
                 category_name = instance.symptom.name
 
-            filename = f"{category_name}_{instance.map_type}_{instance.statistic_type}.{instance.filetype}"
+            slugified_category_name = slugify(category_name)
+            slugified_map_type = slugify(instance.map_type)
+            slugified_stat_type = slugify(instance.statistic_type.code)
+            filename = f"{slugified_category_name}_{slugified_map_type}_{slugified_stat_type}.{instance.filetype}"
             instance.path.name = filename
 
             if self.user:
@@ -866,8 +870,9 @@ class BaseGroupLevelMapForm(forms.ModelForm):
                             map_type='group_level_map',
                             voxelwise_map_name=instance.path.name
                         )
-                    except Exception:
+                    except Exception as e:
                         # Handle processing error
+                        print("Error processing Group Level Map file:", str(e))  # Debugging
                         pass
                     finally:
                         session.close()
@@ -875,6 +880,7 @@ class BaseGroupLevelMapForm(forms.ModelForm):
                 transaction.on_commit(process_group_level_map_file)
             else:
                 # Group Level Map file is not a NIFTI file
+                print("Whatever this was, it was not a NIFTI file.")  # Debugging
                 pass
 
         return instance

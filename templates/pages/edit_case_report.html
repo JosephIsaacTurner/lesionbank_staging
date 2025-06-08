@@ -14,7 +14,6 @@
         </div>
     </div>
 
-    <!-- Display Messages -->
     {% if messages %}
         {% for message in messages %}
             <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
@@ -30,20 +29,25 @@
             <p class="lead">
                 Update the details of the case report below.
             </p>
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                {% endfor %}
-            {% endif %}
-            <form method="post" enctype="multipart/form-data">
+            <form method="post" enctype="multipart/form-data" class="mb-4">
                 {% csrf_token %}
                 {{ form|crispy }}
                 <button type="submit" class="btn btn-primary">Save Changes</button>
                 <a href="{% url 'case_report_detail' case_report.id %}" class="btn btn-secondary">Cancel</a>
             </form>
+
+            {% if user.is_authenticated and user.is_staff %}
+            <div class="mt-5 p-4 border border-danger rounded">
+                <h5 class="text-danger">Danger Zone</h5>
+                <p>Deleting a case report is irreversible. It will permanently remove the case report, all associated subjects, and their files from the database and storage.</p>
+                <form action="{% url 'delete_case_report' case_report.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to permanently delete this case report?\n\nThis will also delete all associated subjects and their data. This action cannot be undone.');">
+                        Delete This Case Report
+                    </button>
+                </form>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>

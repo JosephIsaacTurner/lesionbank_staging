@@ -10,7 +10,7 @@ from .views.faq_views import faq_view
 from .views.training_course_views import lesion_tracing_practice_view, create_level_view, lesion_tracing_completion_view
 
 # Case report related views
-from .views.case_report_views import case_report_library_view, case_report_detail_view, get_case_reports_json, import_case_report, edit_case_report_view, lookup_case_report
+from .views.case_report_views import case_report_library_view, case_report_detail_view, get_case_reports_json, import_case_report, edit_case_report_view, delete_case_report_view, lookup_case_report
 
 # Subject and lesion related views
 from .views.lesion_subject_views import edit_subject_view, add_subject_to_case_report, subject_detail_view, lesion_library_view, get_lesion_subjects_json, add_dangling_subject
@@ -39,6 +39,8 @@ urlpatterns = [
     path("library/", case_report_library_view, name="case_report_library"),
     path("case_reports/<int:case_report_id>/", case_report_detail_view, name="case_report_detail"),
     path("edit_case_reports/<int:case_report_id>/", edit_case_report_view, name="edit_case_report"),
+    path('case-reports/<int:case_report_id>/delete/', delete_case_report_view, name='delete_case_report'),
+
     path("import_case_report/", import_case_report, name="import_case_report"),
     path('api/case-reports/', get_case_reports_json, name='get_case_reports_json'),
     path('api/lookup-case-report/', lookup_case_report, name='lookup_case_report'),

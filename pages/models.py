@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.db import transaction
 from urllib.parse import quote_plus
 from django.db.models import Max
+from django.utils.text import slugify
 
 """Helper Functions"""
 
@@ -27,16 +28,17 @@ def original_image_file_path(instance, filename):
 def group_level_map_file_path(instance, filename):
     if instance.domain:
         category = 'domains'
-        filename = f'{instance.domain.name}/{filename}'
+        filename = f'{slugify(instance.domain.name)}/{filename}'
     elif instance.subdomain:
         category = 'subdomains'
-        filename = f'{instance.subdomain.name}/{filename}'
+        filename = f'{slugify(instance.subdomain.name)}/{filename}'
     elif instance.symptom:
         category = 'symptoms'
-        filename = f'{instance.symptom.name}/{filename}'
+        filename = f'{slugify(instance.symptom.name)}/{filename}'
     else:
         category = 'unknown'
-    return f'group_level_maps/{category}/{filename}'
+    filepath = f'group_level_maps/{category}/{filename}'
+    return filepath
 
 """Table Classes"""
 
@@ -199,7 +201,7 @@ class ConnectivityFile(BaseModel):
 
 class GroupLevelMapFile(BaseModel):
     filetype = models.CharField(max_length=255)
-    path = models.FileField(upload_to=group_level_map_file_path)
+    path = models.FileField(upload_to=group_level_map_file_path, max_length=255)
     md5 = models.CharField(max_length=255)
     control_cohort = models.CharField(max_length=255, null=True, blank=True)
     threshold = models.FloatField(null=True, blank=True)
@@ -372,7 +374,6 @@ class Subject(BaseModel):
         return f"Subject {self.id}"
     
     def delete_related_data(self):
-        # Delete related files and data
         for roi_file in self.roi_files.all():
             roi_file.delete_related_files()
             roi_file.delete()
@@ -382,6 +383,10 @@ class Subject(BaseModel):
         for orig_image in self.original_image_files.all():
             orig_image.delete_related_files()
             orig_image.delete()
+
+    def delete(self, *args, **kwargs):
+        self.delete_related_data()
+        super().delete(*args, **kwargs)
     
 class Sex(BaseModel):
     name = models.CharField(max_length=255, null=False, blank=False)
@@ -470,6 +475,19 @@ class CaseReport(BaseModel):
     def __str__(self):
         return self.title if self.title else f"CaseReport {self.id}"
     
+    @transaction.atomic
+    def delete(self, *args, **kwargs):
+        # 1. Manually delete related subjects to trigger their file cleanup.
+        for subject in self.subjects.all():
+            subject.delete()
+
+        # 2. Delete the CaseReport's own PDF file from storage.
+        if self.path and default_storage.exists(self.path.name):
+            default_storage.delete(self.path.name)
+
+        # 3. Call the parent's delete method to remove the database record.
+        super().delete(*args, **kwargs)
+
     class Meta:
         managed = False
         db_table = 'case_reports'

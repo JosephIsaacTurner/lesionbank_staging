@@ -13,8 +13,9 @@ from django.conf import settings
 from django.contrib import messages
 from django.utils.html import format_html
 from django.utils.timezone import now
-from django.views.decorators.http import require_GET
 from django.views.decorators.csrf import csrf_exempt
+from django.core.exceptions import PermissionDenied
+from django.views.decorators.http import require_POST, require_GET
 
 from pages.models import (
     Subject, Symptom,
@@ -463,6 +464,29 @@ def edit_case_report_view(request, case_report_id):
         'title': 'Edit Case Report',
     }
     return render(request, 'pages/edit_case_report.html', context)
+
+
+@require_POST
+@login_required
+def delete_case_report_view(request, case_report_id):
+    """
+    Deletes a case report, its associated subjects, and all related files.
+    This view is protected and requires a POST request to proceed.
+    """
+    # --- ADD this check at the beginning of the view ---
+    if not request.user.is_staff:
+        raise PermissionDenied
+
+    case_report = get_object_or_404(CaseReport, id=case_report_id)
+    report_title = case_report.title
+
+    try:
+        case_report.delete()
+        messages.success(request, f'Successfully deleted Case Report "{report_title}".')
+        return redirect('import_case_report')
+    except Exception as e:
+        messages.error(request, f'An error occurred while deleting the report: {e}')
+        return redirect('edit_case_report', case_report_id=case_report_id)
 
 
 @require_GET

@@ -94,12 +94,12 @@ def domain_detail_view(request, pk):
 
 def get_symptoms_json(request):
     """
-    Retrieve symptoms data in JSON format for DataTables.
+    Retrieve symptoms data in JSON format for DataTables, with conditional visibility
+    for non-staff users.
     """
     draw = int(request.GET.get('draw', 1))
     start = int(request.GET.get('start', 0))
     length = int(request.GET.get('length', 100))
-
     domain_name = request.GET.get('domain_name')
     subdomain_name = request.GET.get('subdomain_name')
     search_value = request.GET.get('search[value]', '')
@@ -115,10 +115,34 @@ def get_symptoms_json(request):
         '5': 'case_report_count',
     }
 
+    is_staff = is_staff_user(request.user)
     queryset = Symptom.objects.all()
+    
+    # This filter will be empty for staff, and will filter for public subjects for non-staff.
+    subject_visibility_filter = Q()
 
-    if not is_staff_user(request.user):
+    # Apply visibility rules for non-staff users
+    if not is_staff:
+        # 1. Exclude symptoms explicitly marked as internal.
         queryset = queryset.filter(internal_use_only=False)
+        
+        # 2. Define the filter to count only public subjects.
+        subject_visibility_filter = Q(subjects_with_symptoms__internal_use_only=False)
+        
+        # 3. Annotate with a temporary public subject count for filtering.
+        queryset = queryset.annotate(
+            public_subject_count=Count(
+                'subjects_with_symptoms',
+                filter=subject_visibility_filter,
+                distinct=True
+            )
+        )
+        
+        # 4. Exclude symptoms that have no visible (public) subjects.
+        queryset = queryset.filter(public_subject_count__gt=0)
+
+    # `recordsTotal` is the count after visibility rules, but before table filtering.
+    records_total = queryset.count()
 
     if domain_name:
         queryset = queryset.filter(domain__name=domain_name)
@@ -135,17 +159,21 @@ def get_symptoms_json(request):
             Q(subdomain__name__icontains=search_value)
         )
 
-    records_total = Symptom.objects.filter(
-        internal_use_only=False if not is_staff_user(request.user) else Q()
-    ).count()
-
+    # `recordsFiltered` is the count after all filters have been applied.
     records_filtered = queryset.count()
 
+    # Annotate the queryset with the final counts for display.
+    # For non-staff, subject_visibility_filter ensures only public subjects are counted.
+    # For staff, the filter is empty, so all subjects are counted.
     queryset = queryset.annotate(
-        subject_count=Count('subjects_with_symptoms', distinct=True),
+        subject_count=Count(
+            'subjects_with_symptoms',
+            filter=subject_visibility_filter,
+            distinct=True
+        ),
         connectivity_subject_count=Count(
             'subjects_with_symptoms',
-            filter=Q(subjects_with_symptoms__connectivity_files__isnull=False),
+            filter=subject_visibility_filter & Q(subjects_with_symptoms__connectivity_files__isnull=False),
             distinct=True
         ),
         case_report_count=Count('case_reports', distinct=True),
@@ -160,9 +188,6 @@ def get_symptoms_json(request):
 
     data = []
     for symptom in queryset:
-        if not is_staff_user(request.user) and symptom.internal_use_only:
-            continue
-
         domain_link = ''
         if symptom.domain:
             domain_detail_url = reverse('domain_detail', args=[symptom.domain.id])
@@ -180,22 +205,19 @@ def get_symptoms_json(request):
         case_reports_link = f'<a href="{case_reports_url}">{symptom.case_report_count}</a>'
 
         symptom_map = GroupLevelMapFile.objects.filter(
-            symptom=symptom,
-            statistic_type__code='percent_overlap'
+            symptom=symptom, statistic_type__code='percent_overlap'
         ).first()
 
         domain_map = None
         if symptom.domain:
             domain_map = GroupLevelMapFile.objects.filter(
-                domain=symptom.domain,
-                statistic_type__code='percent_overlap'
+                domain=symptom.domain, statistic_type__code='percent_overlap'
             ).first()
 
         subdomain_map = None
         if symptom.subdomain:
             subdomain_map = GroupLevelMapFile.objects.filter(
-                subdomain=symptom.subdomain,
-                statistic_type__code='percent_overlap'
+                subdomain=symptom.subdomain, statistic_type__code='percent_overlap'
             ).first()
 
         record = {
@@ -212,13 +234,11 @@ def get_symptoms_json(request):
                 'id': symptom_map.id,
                 'path': symptom_map.path.url if symptom_map.path else None
             }
-
         if domain_map:
             record['domain_sensitivity_percent_overlap_map'] = {
                 'id': domain_map.id,
                 'path': domain_map.path.url if domain_map.path else None
             }
-
         if subdomain_map:
             record['subdomain_sensitivity_percent_overlap_map'] = {
                 'id': subdomain_map.id,

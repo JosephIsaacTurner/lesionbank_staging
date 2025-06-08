@@ -133,7 +133,7 @@ def determine_filetype(filepath: str) -> str:
         if check(filepath):
             return filetype
     
-    return 'unknown'
+    return f'unknown ({str(filepath)[-5:]})'
 
 def determine_coordinate_space(shape: Tuple[int, int, int], affine: np.ndarray) -> str:
     if shape == (91, 109, 91) and any(
